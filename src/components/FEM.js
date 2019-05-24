@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import openSocket from 'socket.io-client';
+import SocketService from '../services/socket';
 
 import threeEntryPoint from '../helpers/threeEntryPoint.js';
 
@@ -7,7 +7,7 @@ export default class FEM extends Component {
     constructor (props) {
         super(props);
 
-        const socket = openSocket('http://localhost:4000');
+        const socket = SocketService.getConnection();
 
         this.state = {
             socket: socket
