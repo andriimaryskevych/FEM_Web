@@ -7,7 +7,7 @@ export default class FEM extends Component {
     constructor (props) {
         super(props);
 
-        const socket = openSocket('http://localhost:3000');
+        const socket = openSocket('http://localhost:4000');
 
         this.state = {
             socket: socket
