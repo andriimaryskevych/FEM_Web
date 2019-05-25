@@ -1,0 +1,9 @@
+.container-fluid {
+    height: 100vh;
+    width: 80%;
+    margin: 0 auto;
+}
+
+canvas {
+    width: 100%;
+}

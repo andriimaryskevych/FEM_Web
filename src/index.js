@@ -7,7 +7,8 @@ import { BrowserRouter } from "react-router-dom";
 import App from './components/App';
 import reducers from './reducers';
 
-import './style.css';
+import './style/reset.css';
+import './style/style.css';
 
 const createStoreWithMiddleware = applyMiddleware()(createStore);
 
