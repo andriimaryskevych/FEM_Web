@@ -147,20 +147,29 @@ class CanvasDrawer {
 
             for (let i = 0; i < resultPoints['NT'].length; i++)
             {
+                // This is one Finite Element
                 let finiteElementVerticesNumbers = resultPoints['NT'][i];
 
-                for (let j = 0 ; j < finiteElementVerticesNumbers.length; j++) {
-                    geometry.vertices.push(new Vector3(
-                        resultPoints['AKT'][finiteElementVerticesNumbers[j]][0],
-                        resultPoints['AKT'][finiteElementVerticesNumbers[j]][1],
-                        resultPoints['AKT'][finiteElementVerticesNumbers[j]][2])
-                    );
-                }
+                triangles.forEach(site => {
+                    site.forEach(triangle => {
+                        let geom = new Geometry();
+
+                        let first = resultPoints['AKT'][finiteElementVerticesNumbers[triangle[0]]];
+                        let second = resultPoints['AKT'][finiteElementVerticesNumbers[triangle[1]]];
+                        let third = resultPoints['AKT'][finiteElementVerticesNumbers[triangle[2]]];
+
+                        geom.vertices.push(new Vector3(first[0], first[1], first[2]))
+                        geom.vertices.push(new Vector3(second[0], second[1], second[2]));
+                        geom.vertices.push(new Vector3(third[0], third[1], third[2]));
+
+                        geom.faces.push(new Face3(0, 1, 2));
+
+                        let mesh = new Mesh(geom, new MeshBasicMaterial({color: 'red'}));
+
+                        scene.add(mesh);
+                    });
+                });
             }
-
-            result = new Points( geometry, starsMaterial );
-
-            scene.add(result);
         });
 
         var geom = new Geometry();
