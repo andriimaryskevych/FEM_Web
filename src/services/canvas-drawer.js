@@ -17,34 +17,36 @@ import {
     AxesHelper,
 
     Face3,
-    Mesh
+    Mesh,
+    TrianglesDrawMode,
+    TriangleFanDrawMode
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const triangles = [
     [
-        [0, 5, 4],
-        [0, 1, 5]
+        [0, 4, 5],
+        [0, 5, 1]
     ],
     [
-        [1, 6, 5],
-        [1, 2, 6]
+        [1, 5, 6],
+        [1, 6, 2]
     ],
     [
-        [2, 7, 6],
-        [2, 3, 7]
+        [2, 6, 7],
+        [2, 7, 3]
     ],
     [
-        [3, 4, 7],
-        [3, 0, 4]
+        [3, 7, 4],
+        [3, 4, 0]
     ],
     [
-        [0, 3, 2],
-        [0, 2, 1]
+        [0, 2, 3],
+        [0, 1, 2]
     ],
     [
-        [4, 6, 7],
-        [4, 5, 6]
+        [4, 7, 6],
+        [4, 6, 5]
     ]
 ];
 
@@ -111,9 +113,9 @@ class CanvasDrawer {
                 let finiteElementVerticesNumbers = startPoints['NT'][i];
 
                 triangles.forEach(site => {
-                    site.forEach(triangle => {
-                        let geom = new Geometry();
+                    let geom = new Geometry();
 
+                    site.forEach(triangle => {
                         let first = startPoints['AKT'][finiteElementVerticesNumbers[triangle[0]]];
                         let second = startPoints['AKT'][finiteElementVerticesNumbers[triangle[1]]];
                         let third = startPoints['AKT'][finiteElementVerticesNumbers[triangle[2]]];
@@ -123,11 +125,10 @@ class CanvasDrawer {
                         geom.vertices.push(new Vector3(third[0], third[1], third[2]));
 
                         geom.faces.push(new Face3(0, 1, 2));
-
-                        let mesh = new Mesh(geom, new MeshBasicMaterial({color: 'green'}));
-
-                        scene.add(mesh);
                     });
+
+                    let mesh = new Mesh(geom, new MeshBasicMaterial({color: 'green'}));
+                    scene.add(mesh);
                 });
             }
         });
@@ -136,47 +137,63 @@ class CanvasDrawer {
         let resultPoints;
         let result;
 
-        socket.on('points.txt', (data) => {
-            resultPoints = JSON.parse(data);
+        // socket.on('points.txt', (data) => {
+        //     resultPoints = JSON.parse(data);
 
-            for (let i = 0; i < resultPoints['NT'].length; i++)
-            {
-                // This is one Finite Element
-                let finiteElementVerticesNumbers = resultPoints['NT'][i];
+        //     for (let i = 0; i < resultPoints['NT'].length; i++)
+        //     {
+        //         // This is one Finite Element
+        //         let finiteElementVerticesNumbers = resultPoints['NT'][i];
 
-                triangles.forEach(site => {
-                    site.forEach(triangle => {
-                        let geom = new Geometry();
+        //         triangles.forEach(site => {
+        //             site.forEach(triangle => {
+        //                 let geom = new Geometry();
 
-                        let first = resultPoints['AKT'][finiteElementVerticesNumbers[triangle[0]]];
-                        let second = resultPoints['AKT'][finiteElementVerticesNumbers[triangle[1]]];
-                        let third = resultPoints['AKT'][finiteElementVerticesNumbers[triangle[2]]];
+        //                 let first = resultPoints['AKT'][finiteElementVerticesNumbers[triangle[0]]];
+        //                 let second = resultPoints['AKT'][finiteElementVerticesNumbers[triangle[1]]];
+        //                 let third = resultPoints['AKT'][finiteElementVerticesNumbers[triangle[2]]];
 
-                        geom.vertices.push(new Vector3(first[0], first[1], first[2]))
-                        geom.vertices.push(new Vector3(second[0], second[1], second[2]));
-                        geom.vertices.push(new Vector3(third[0], third[1], third[2]));
+        //                 geom.vertices.push(new Vector3(first[0], first[1], first[2]))
+        //                 geom.vertices.push(new Vector3(second[0], second[1], second[2]));
+        //                 geom.vertices.push(new Vector3(third[0], third[1], third[2]));
 
-                        geom.faces.push(new Face3(0, 1, 2));
+        //                 geom.faces.push(new Face3(0, 1, 2));
 
-                        let mesh = new Mesh(geom, new MeshBasicMaterial({color: 'red'}));
+        //                 let mesh = new Mesh(geom, new MeshBasicMaterial({color: 'red'}));
 
-                        scene.add(mesh);
-                    });
-                });
-            }
-        });
+        //                 scene.add(mesh);
+        //             });
+        //         });
+        //     }
+        // });
 
-        var geom = new Geometry();
+        var geometry = new Geometry();
 
-        geom.vertices.push(new Vector3(0, 0, 0));
-        geom.vertices.push(new Vector3(30, 0, 0));
-        geom.vertices.push(new Vector3(30, 30, 0));
+        geometry.vertices.push(
+            new Vector3( -10,  10, 0 ),
+            new Vector3( -10, -10, 0 ),
+            new Vector3(  10, -10, 0 ),
 
-        geom.faces.push(new Face3(0, 1, 2));
+            new Vector3( -10,  10, 0 ),
+            new Vector3(  10, -10, 0 ),
+            new Vector3(  10,  10, 0 ),
 
-        var mesh = new Mesh(geom, new MeshBasicMaterial({color: 'gray'}));
+            new Vector3( -10,  10, 1 ),
+            new Vector3( -10, -10, 1 ),
+            new Vector3(  10, -10, 1 ),
 
-        scene.add(mesh);
+            new Vector3( -10,  10, 1 ),
+            new Vector3(  10, -10, 1 ),
+            new Vector3(  10,  10, 1 ),
+        );
+        geometry.faces.push( new Face3( 0, 1, 2 ));
+
+        var material = new MeshBasicMaterial( { color: 0xffff00 } );
+
+        var mesh = new Mesh( geometry, material );
+        mesh.drawMode = TrianglesDrawMode;
+
+        scene.add( mesh );
 
         function loop() {
 
