@@ -3,7 +3,7 @@ import SocketService from '../services/socket';
 
 import threeEntryPoint from '../helpers/threeEntryPoint.js';
 
-export default class FEM extends Component {
+export default class Canvas extends Component {
     constructor (props) {
         super(props);
 
