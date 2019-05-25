@@ -21,6 +21,33 @@ import {
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+const triangles = [
+    [
+        [0, 5, 4],
+        [0, 1, 5]
+    ],
+    [
+        [1, 6, 5],
+        [1, 2, 6]
+    ],
+    [
+        [2, 7, 6],
+        [2, 3, 7]
+    ],
+    [
+        [3, 4, 7],
+        [3, 0, 4]
+    ],
+    [
+        [0, 3, 2],
+        [0, 2, 1]
+    ],
+    [
+        [4, 6, 7],
+        [4, 5, 6]
+    ]
+];
+
 class CanvasDrawer {
     constructor(canvas, socket) {
         const width = canvas.offsetWidth;
@@ -83,20 +110,29 @@ class CanvasDrawer {
 
             for (let i = 0; i < startPoints['NT'].length; i++)
             {
+                // This is one Finite Element
                 let finiteElementVerticesNumbers = startPoints['NT'][i];
 
-                for (let j = 0 ; j < finiteElementVerticesNumbers.length; j++) {
-                    geometry.vertices.push(new Vector3(
-                        startPoints['AKT'][finiteElementVerticesNumbers[j]][0],
-                        startPoints['AKT'][finiteElementVerticesNumbers[j]][1],
-                        startPoints['AKT'][finiteElementVerticesNumbers[j]][2])
-                    );
-                }
+                triangles.forEach(site => {
+                    site.forEach(triangle => {
+                        let geom = new Geometry();
+
+                        let first = startPoints['AKT'][finiteElementVerticesNumbers[triangle[0]]];
+                        let second = startPoints['AKT'][finiteElementVerticesNumbers[triangle[1]]];
+                        let third = startPoints['AKT'][finiteElementVerticesNumbers[triangle[2]]];
+
+                        geom.vertices.push(new Vector3(first[0], first[1], first[2]))
+                        geom.vertices.push(new Vector3(second[0], second[1], second[2]));
+                        geom.vertices.push(new Vector3(third[0], third[1], third[2]));
+
+                        geom.faces.push(new Face3(0, 1, 2));
+
+                        let mesh = new Mesh(geom, new MeshBasicMaterial({color: 'green'}));
+
+                        scene.add(mesh);
+                    });
+                });
             }
-
-            start = new Points( geometry, starsMaterial );
-
-            scene.add(start);
         });
 
         // adding green points that represent result poistion
