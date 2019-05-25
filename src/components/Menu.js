@@ -19,7 +19,7 @@ export default class Menu extends Component {
 
     render() {
         return (
-            <div>
+            <div className='menu-container'>
                 <form>
                     <input type="text" name="Input" ref={element => this.InputField = element}/>
                     <input type="button" value="Submit" onClick={this.handleButtonClick.bind(this)}/>

@@ -5,7 +5,7 @@ import Menu from './Menu';
 export default class App extends Component {
     render() {
         return (
-            <div className=''>
+            <div className='container'>
                 <Menu />
                 <Canvas />
             </div>
