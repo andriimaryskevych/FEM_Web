@@ -64,9 +64,17 @@ class CanvasDrawer {
             var starsMaterial = new THREE.PointsMaterial( { color: 'black', size: 2.0 } );
             var geometry = new THREE.Geometry();
 
-            for(var i = 0; i < startPoints.length; i++)
+            for (let i = 0; i < startPoints['NT'].length; i++)
             {
-                geometry.vertices.push(new THREE.Vector3( startPoints[i].x, startPoints[i].y, startPoints[i].z) );
+                let finiteElementVerticesNumbers = startPoints['NT'][i];
+
+                for (let j = 0 ; j < finiteElementVerticesNumbers.length; j++) {
+                    geometry.vertices.push(new THREE.Vector3(
+                        startPoints['AKT'][finiteElementVerticesNumbers[j]][0],
+                        startPoints['AKT'][finiteElementVerticesNumbers[j]][1],
+                        startPoints['AKT'][finiteElementVerticesNumbers[j]][2])
+                    );
+                }
             }
 
             start = new THREE.Points( geometry, starsMaterial );
@@ -79,14 +87,22 @@ class CanvasDrawer {
         let result;
 
         socket.on('points.txt', (data) => {
-            resultPoints = JSON.parse(data);
-
             var starsMaterial = new THREE.PointsMaterial( { color: 'green', size: 3.0 } );
             var geometry = new THREE.Geometry();
 
-            for(var i = 0; i < resultPoints.length; i++)
+            resultPoints = JSON.parse(data);
+
+            for (let i = 0; i < resultPoints['NT'].length; i++)
             {
-                geometry.vertices.push(new THREE.Vector3( resultPoints[i].x, resultPoints[i].y, resultPoints[i].z ));
+                let finiteElementVerticesNumbers = resultPoints['NT'][i];
+
+                for (let j = 0 ; j < finiteElementVerticesNumbers.length; j++) {
+                    geometry.vertices.push(new THREE.Vector3(
+                        resultPoints['AKT'][finiteElementVerticesNumbers[j]][0],
+                        resultPoints['AKT'][finiteElementVerticesNumbers[j]][1],
+                        resultPoints['AKT'][finiteElementVerticesNumbers[j]][2])
+                    );
+                }
             }
 
             result = new THREE.Points( geometry, starsMaterial );
