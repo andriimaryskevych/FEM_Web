@@ -19,7 +19,11 @@ import {
     Face3,
     Mesh,
     TrianglesDrawMode,
-    TriangleFanDrawMode
+    TriangleFanDrawMode,
+    TriangleStripDrawMode,
+    DoubleSide,
+    BufferAttribute,
+    BufferGeometry
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
@@ -167,31 +171,31 @@ class CanvasDrawer {
         //     }
         // });
 
-        var geometry = new Geometry();
+        var geometry = new BufferGeometry();
 
-        geometry.vertices.push(
-            new Vector3( -10,  10, 0 ),
-            new Vector3( -10, -10, 0 ),
-            new Vector3(  10, -10, 0 ),
+        var positions = new Float32Array( 8 * 3 ); // 4 triangles, 3 vertices each
 
-            new Vector3( -10,  10, 0 ),
-            new Vector3(  10, -10, 0 ),
-            new Vector3(  10,  10, 0 ),
+        positions[ 0 ] = 0;
+        positions[ 1 ] = 10;
+        positions[ 2 ] = 0;
 
-            new Vector3( -10,  10, 1 ),
-            new Vector3( -10, -10, 1 ),
-            new Vector3(  10, -10, 1 ),
+        positions[ 3 ] = 0;
+        positions[ 4 ] = 10;
+        positions[ 5 ] = 10;
 
-            new Vector3( -10,  10, 1 ),
-            new Vector3(  10, -10, 1 ),
-            new Vector3(  10,  10, 1 ),
-        );
-        geometry.faces.push( new Face3( 0, 1, 2 ));
+        positions[ 6 ] = 0;
+        positions[ 7 ] = 0;
+        positions[ 8 ] = 10;
 
-        var material = new MeshBasicMaterial( { color: 0xffff00 } );
+        positions[ 9 ] = 10;
+        positions[ 10 ] = 10;
+        positions[ 11 ] = 10;
 
-        var mesh = new Mesh( geometry, material );
-        mesh.drawMode = TrianglesDrawMode;
+        geometry.addAttribute( 'position', new BufferAttribute( positions, 3 ) );
+
+        var mesh = new Mesh( geometry, new MeshBasicMaterial( { side: DoubleSide } ) );
+
+        mesh.setDrawMode( TriangleStripDrawMode );
 
         scene.add( mesh );
 
