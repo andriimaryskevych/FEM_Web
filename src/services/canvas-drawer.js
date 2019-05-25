@@ -55,6 +55,58 @@ class CanvasDrawer {
         controls.addEventListener('change', render);
         controls.update();
 
+        // adding red points that represent statr poistion
+        let startPoints;
+        let start;
+
+        socket.on('start.txt', (data) => {
+            if (start) {
+                scene.remove(start);
+                start.geometry.dispose();
+                start.material.dispose();
+                start = undefined;
+
+                scene.remove(result);
+                result.geometry.dispose();
+                result.material.dispose();
+                result = undefined;
+            }
+
+            startPoints = JSON.parse(data);
+
+            var starsMaterial = new THREE.PointsMaterial( { color: 'black', size: 2.0 } );
+            var geometry = new THREE.Geometry();
+
+            for(var i = 0; i < startPoints.length; i++)
+            {
+                geometry.vertices.push(new THREE.Vector3( startPoints[i].x, startPoints[i].y, startPoints[i].z) );
+            }
+
+            start = new THREE.Points( geometry, starsMaterial );
+
+            scene.add(start);
+        });
+
+        // adding green points that represent result poistion
+        let resultPoints;
+        let result;
+
+        socket.on('points.txt', (data) => {
+            resultPoints = JSON.parse(data);
+
+            var starsMaterial = new THREE.PointsMaterial( { color: 'green', size: 3.0 } );
+            var geometry = new THREE.Geometry();
+
+            for(var i = 0; i < resultPoints.length; i++)
+            {
+                geometry.vertices.push(new THREE.Vector3( resultPoints[i].x, resultPoints[i].y, resultPoints[i].z ));
+            }
+
+            result = new THREE.Points( geometry, starsMaterial );
+
+            scene.add(result);
+        });
+
         function render() {
             renderer.render(scene, camera);
         }
