@@ -12,7 +12,7 @@ export default class Canvas extends Component {
     }
 
     componentDidMount() {
-        new CanvasDrawer(this.threeRootElement);
+        new CanvasDrawer(this.threeRootElement, this.state.socket);
     }
 
     render () {

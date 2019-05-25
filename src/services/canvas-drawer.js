@@ -1,12 +1,9 @@
-import SocketService from '../services/socket';
-var THREE = require('three');
+const THREE = require('three');
 window.THREE = THREE;
 require('three/examples/js/controls/OrbitControls');
 
 class CanvasDrawer {
-    constructor (canvas) {
-        const socket = SocketService.getConnection();
-
+    constructor (canvas, socket) {
         const width = canvas.offsetWidth;
         const height = canvas.offsetHeight;
         canvas.setAttribute('width', width);
