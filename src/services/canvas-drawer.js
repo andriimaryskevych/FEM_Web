@@ -39,6 +39,7 @@ class CanvasDrawer {
         renderer.setClearColor(0xffffff);
 
         let controls = new THREE.OrbitControls(camera, canvas);
+        controls.target = new THREE.Vector3( 50, 50, 0);
         controls.update();
 
         // adding red points that represent statr poistion
