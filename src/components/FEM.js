@@ -15,7 +15,6 @@ export default class FEM extends Component {
     }
 
     componentDidMount() {
-        this.state.socket.emit('start');
         threeEntryPoint(this.threeRootElement, this.state.socket);
     }
 
