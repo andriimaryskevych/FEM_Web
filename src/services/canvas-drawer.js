@@ -105,9 +105,6 @@ class CanvasDrawer {
 
             startPoints = JSON.parse(data);
 
-            var starsMaterial = new PointsMaterial( { color: 'black', size: 2.0 } );
-            var geometry = new Geometry();
-
             for (let i = 0; i < startPoints['NT'].length; i++)
             {
                 // This is one Finite Element
@@ -140,9 +137,6 @@ class CanvasDrawer {
         let result;
 
         socket.on('points.txt', (data) => {
-            var starsMaterial = new PointsMaterial( { color: 'green', size: 3.0 } );
-            var geometry = new Geometry();
-
             resultPoints = JSON.parse(data);
 
             for (let i = 0; i < resultPoints['NT'].length; i++)
