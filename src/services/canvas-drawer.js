@@ -28,30 +28,12 @@ import {
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const triangles = [
-    [
-        [0, 4, 5],
-        [0, 5, 1]
-    ],
-    [
-        [1, 5, 6],
-        [1, 6, 2]
-    ],
-    [
-        [2, 6, 7],
-        [2, 7, 3]
-    ],
-    [
-        [3, 7, 4],
-        [3, 4, 0]
-    ],
-    [
-        [0, 2, 3],
-        [0, 1, 2]
-    ],
-    [
-        [4, 7, 6],
-        [4, 6, 5]
-    ]
+    [4, 12, 16, 0, 5, 8, 13, 1],
+    [5, 13, 17, 1, 6, 9, 14, 2],
+    [6, 14, 18, 2, 7, 10, 15, 3],
+    [7, 15, 19, 3, 4, 11, 12, 0],
+    [0, 11, 8, 3, 1, 10, 9, 2],
+    [7, 19, 18, 4, 6, 16, 17, 5]
 ];
 
 class CanvasDrawer {
@@ -117,21 +99,26 @@ class CanvasDrawer {
                 let finiteElementVerticesNumbers = startPoints['NT'][i];
 
                 triangles.forEach(site => {
-                    let geom = new Geometry();
+                    let geometry = new BufferGeometry();
+                    let positions = new Float32Array( 8 * 3 );
 
-                    site.forEach(triangle => {
-                        let first = startPoints['AKT'][finiteElementVerticesNumbers[triangle[0]]];
-                        let second = startPoints['AKT'][finiteElementVerticesNumbers[triangle[1]]];
-                        let third = startPoints['AKT'][finiteElementVerticesNumbers[triangle[2]]];
+                    site.forEach((vertexNumber, index) => {
+                        let point = startPoints['AKT'][finiteElementVerticesNumbers[vertexNumber]];
 
-                        geom.vertices.push(new Vector3(first[0], first[1], first[2]))
-                        geom.vertices.push(new Vector3(second[0], second[1], second[2]));
-                        geom.vertices.push(new Vector3(third[0], third[1], third[2]));
-
-                        geom.faces.push(new Face3(0, 1, 2));
+                        positions[index * 3] = point[0];
+                        positions[index * 3 + 1] = point[1];
+                        positions[index * 3 + 2] = point[2];
                     });
 
-                    let mesh = new Mesh(geom, new MeshBasicMaterial({color: 'green'}));
+                    console.log(positions);
+
+                    geometry.addAttribute( 'position', new BufferAttribute( positions, 3 ) );
+                    let mesh = new Mesh( geometry, new MeshBasicMaterial( {
+                        // side: DoubleSide,
+                        color: 'red'
+                    } ) );
+                    mesh.setDrawMode( TriangleStripDrawMode );
+
                     scene.add(mesh);
                 });
             }
@@ -171,33 +158,33 @@ class CanvasDrawer {
         //     }
         // });
 
-        var geometry = new BufferGeometry();
+        // var geometry = new BufferGeometry();
 
-        var positions = new Float32Array( 8 * 3 ); // 4 triangles, 3 vertices each
+        // var positions = new Float32Array( 4 * 3 );
 
-        positions[ 0 ] = 0;
-        positions[ 1 ] = 10;
-        positions[ 2 ] = 0;
+        // positions[ 0 ] = -10;
+        // positions[ 1 ] = -10;
+        // positions[ 2 ] = 0;
 
-        positions[ 3 ] = 0;
-        positions[ 4 ] = 10;
-        positions[ 5 ] = 10;
+        // positions[ 3 ] = -10;
+        // positions[ 4 ] =  10;
+        // positions[ 5 ] =  0;
 
-        positions[ 6 ] = 0;
-        positions[ 7 ] = 0;
-        positions[ 8 ] = 10;
+        // positions[ 6 ] = 10;
+        // positions[ 7 ] = -10;
+        // positions[ 8 ] = 0;
 
-        positions[ 9 ] = 10;
-        positions[ 10 ] = 10;
-        positions[ 11 ] = 10;
+        // positions[ 9 ] = 10;
+        // positions[ 10 ] = 10;
+        // positions[ 11 ] = 0;
 
-        geometry.addAttribute( 'position', new BufferAttribute( positions, 3 ) );
+        // geometry.addAttribute( 'position', new BufferAttribute( positions, 3 ) );
 
-        var mesh = new Mesh( geometry, new MeshBasicMaterial( { side: DoubleSide } ) );
+        // var mesh = new Mesh( geometry, new MeshBasicMaterial( { side: DoubleSide } ) );
 
-        mesh.setDrawMode( TriangleStripDrawMode );
+        // mesh.setDrawMode( TriangleStripDrawMode );
 
-        scene.add( mesh );
+        // scene.add( mesh );
 
         function loop() {
 
