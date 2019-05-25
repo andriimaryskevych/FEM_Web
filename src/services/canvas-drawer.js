@@ -13,10 +13,15 @@ class CanvasDrawer {
         var scene = new THREE.Scene();
         scene.background = new THREE.Color(0xf0f0f0);
 
-        var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
-        camera.position.set(100, 100, 100);
-        camera.lookAt( new THREE.Vector3( 50, 50, 50 ) );
+        var VIEW_ANGLE = 45;
+        var ASPECT = width / height;
+        var NEAR = 0.1;
+        var FAR = 10000;
+        let camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+        camera.position.z = 300;
+        camera.up = new THREE.Vector3( 0, 0, 1 );
         scene.add(camera);
+
         scene.add(new THREE.AmbientLight(0xf0f0f0));
 
         var light = new THREE.SpotLight(0xffffff, 1.5);
@@ -39,6 +44,7 @@ class CanvasDrawer {
         scene.add(plane);
 
         var helper = new THREE.GridHelper(2000, 100);
+        helper.geometry.rotateX( Math.PI / 2 );
         helper.material.opacity = 0.25;
         helper.material.transparent = true;
         scene.add(helper);
@@ -52,7 +58,6 @@ class CanvasDrawer {
         renderer.setClearColor(0xffffff);
 
         let controls = new THREE.OrbitControls(camera, canvas);
-        controls.addEventListener('change', render);
         controls.update();
 
         // adding red points that represent statr poistion
@@ -107,11 +112,13 @@ class CanvasDrawer {
             scene.add(result);
         });
 
-        function render() {
+        function loop() {
+
             renderer.render(scene, camera);
+            requestAnimationFrame(loop);
         }
 
-        render();
+        loop();
     }
 }
 
