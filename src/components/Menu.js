@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MeshForm from './MeshForm';
 import SocketService from '../services/socket';
 
 
@@ -20,10 +21,7 @@ export default class Menu extends Component {
     render() {
         return (
             <div className='menu-container'>
-                <form>
-                    <input type="text" name="Input" ref={element => this.InputField = element}/>
-                    <input type="button" value="Submit" onClick={this.handleButtonClick.bind(this)}/>
-                </form>
+                <MeshForm />
             </div>
         );
     }

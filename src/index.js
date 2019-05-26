@@ -8,6 +8,8 @@ import store from './store';
 
 import './style/reset.css';
 import './style/style.css';
+import './style/mesh-form.css';
+
 
 setInterval(() => {
     store.dispatch({ type: 'SOME' });
