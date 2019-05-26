@@ -30,13 +30,44 @@ import {
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-const triangles = [
-    [4, 12, 16, 0, 5, 8, 13, 1],
-    [5, 13, 17, 1, 6, 9, 14, 2],
-    [6, 14, 18, 2, 7, 10, 15, 3],
-    [7, 15, 19, 3, 4, 11, 12, 0],
-    [0, 11, 8, 3, 1, 10, 9, 2],
-    [7, 19, 18, 4, 6, 16, 17, 5]
+// Defines path on each part for crating trinagles in strip mode
+// const triangles = [
+//     [4, 12, 16, 0, 5, 8, 13, 1],
+//     [5, 13, 17, 1, 6, 9, 14, 2],
+//     [6, 14, 18, 2, 7, 10, 15, 3],
+//     [7, 15, 19, 3, 4, 11, 12, 0],
+//     [0, 11, 8, 3, 1, 10, 9, 2],
+//     [7, 19, 18, 4, 6, 16, 17, 5]
+// ];
+
+/**
+ * Adapts each part to standart square to vertexes of standart cube:
+ *
+ * 3----6----2
+ * |         |
+ * |         |
+ * 7         5
+ * |         |
+ * |         |
+ * 0----4----1
+ */
+const parts = [
+    [0, 1, 5, 4, 8, 13, 16, 12],
+    [1, 2, 6, 5, 9, 14, 17, 13],
+    [2, 3, 7, 6, 10, 15, 18, 14],
+    [3, 0, 4, 7, 11, 12, 19, 15],
+    [0, 1, 2, 3, 8, 9, 10, 11],
+    [4, 5, 6, 7, 16, 17, 18, 19]
+];
+
+// Defines collection of triangles on each square
+const trianlgesOnSquare = [
+    [7, 6, 3],
+    [7, 0 ,4],
+    [4, 1, 5],
+    [5, 2, 6],
+    [7, 4, 6],
+    [4, 5, 6]
 ];
 
 class CanvasDrawer {
@@ -96,30 +127,41 @@ class CanvasDrawer {
 
             startPoints = JSON.parse(data);
 
+            let AKT = startPoints['AKT'];
+            let NT = startPoints['NT'];
+
             for (let i = 0; i < startPoints['NT'].length; i++)
             {
-                // This is one Finite Element
-                let finiteElementVerticesNumbers = startPoints['NT'][i];
+                let NTi = NT[i];
 
-                triangles.forEach(site => {
-                    let geometry = new BufferGeometry();
-                    let positions = new Float32Array( 8 * 3 );
+                parts.forEach(part => {
+                    let positions = new Float32Array( 6 * 3 * 3 );
 
-                    site.forEach((vertexNumber, index) => {
-                        let point = startPoints['AKT'][finiteElementVerticesNumbers[vertexNumber]];
+                    trianlgesOnSquare.forEach((triangle, index) => {
+                        const point0 = AKT[NTi[part[triangle[0]]]];
+                        const point1 = AKT[NTi[part[triangle[1]]]];
+                        const point2 = AKT[NTi[part[triangle[2]]]];
 
-                        positions[index * 3] = point[0];
-                        positions[index * 3 + 1] = point[1];
-                        positions[index * 3 + 2] = point[2];
+                        positions[index * 9 + 0] = point0[0];
+                        positions[index * 9 + 1] = point0[1];
+                        positions[index * 9 + 2] = point0[2];
+
+                        positions[index * 9 + 3] = point1[0];
+                        positions[index * 9 + 4] = point1[1];
+                        positions[index * 9 + 5] = point1[2];
+
+                        positions[index * 9 + 6] = point2[0];
+                        positions[index * 9 + 7] = point2[1];
+                        positions[index * 9 + 8] = point2[2];
                     });
 
-                    geometry.addAttribute( 'position', new BufferAttribute( positions, 3 ) );
-                    let mesh = new Mesh( geometry, new MeshBasicMaterial( {
-                        color: 'green'
-                    } ) );
-                    mesh.setDrawMode( TriangleStripDrawMode );
-
-                    // scene.add(mesh);
+                    let geometry = new BufferGeometry();
+                    geometry.addAttribute('position', new BufferAttribute(positions, 3));
+                    let mesh = new Mesh(geometry, new MeshBasicMaterial({
+                        color: 'green',
+                        side: DoubleSide
+                    }));
+                    scene.add(mesh);
                 });
             }
         });
@@ -128,42 +170,42 @@ class CanvasDrawer {
         let resultPoints;
         let result;
 
-        socket.on('points.txt', (data) => {
-            resultPoints = JSON.parse(data);
+        // socket.on('points.txt', (data) => {
+        //     resultPoints = JSON.parse(data);
 
-            for (let i = 0; i < resultPoints['NT'].length; i++)
-            {
-                // This is one Finite Element
-                let finiteElementVerticesNumbers = resultPoints['NT'][i];
+        //     for (let i = 0; i < resultPoints['NT'].length; i++)
+        //     {
+        //         // This is one Finite Element
+        //         let finiteElementVerticesNumbers = resultPoints['NT'][i];
 
-                triangles.forEach(site => {
-                    let triangleGeometry = new BufferGeometry();
-                    let lineGeometry = new BufferGeometry();
+        //         triangles.forEach(site => {
+        //             let triangleGeometry = new BufferGeometry();
+        //             let lineGeometry = new BufferGeometry();
 
-                    let positions = new Float32Array( 8 * 3 );
+        //             let positions = new Float32Array( 8 * 3 );
 
-                    site.forEach((vertexNumber, index) => {
-                        let point = resultPoints['AKT'][finiteElementVerticesNumbers[vertexNumber]];
+        //             site.forEach((vertexNumber, index) => {
+        //                 let point = resultPoints['AKT'][finiteElementVerticesNumbers[vertexNumber]];
 
-                        positions[index * 3] = point[0];
-                        positions[index * 3 + 1] = point[1];
-                        positions[index * 3 + 2] = point[2];
-                    });
+        //                 positions[index * 3] = point[0];
+        //                 positions[index * 3 + 1] = point[1];
+        //                 positions[index * 3 + 2] = point[2];
+        //             });
 
-                    triangleGeometry.addAttribute('position', new BufferAttribute(positions, 3));
-                    let triangleMesh = new Mesh(triangleGeometry, new MeshBasicMaterial({ color: 'red' }));
-                    triangleMesh.setDrawMode(TriangleStripDrawMode);
-                    scene.add(triangleMesh);
+        //             triangleGeometry.addAttribute('position', new BufferAttribute(positions, 3));
+        //             let triangleMesh = new Mesh(triangleGeometry, new MeshBasicMaterial({ color: 'red' }));
+        //             triangleMesh.setDrawMode(TriangleStripDrawMode);
+        //             scene.add(triangleMesh);
 
-                    lineGeometry.addAttribute('position', new BufferAttribute(positions, 3));
-                    // lineGeometry.addAttribute( 'color', new BufferAttribute(colors, 3) );
-                    let lineMaterial = new LineBasicMaterial({ vertexColors: VertexColors });
-                    let lineMesh = new Line(lineGeometry, lineMaterial);
-                    scene.add(lineMesh);
+        //             lineGeometry.addAttribute('position', new BufferAttribute(positions, 3));
+        //             // lineGeometry.addAttribute( 'color', new BufferAttribute(colors, 3) );
+        //             let lineMaterial = new LineBasicMaterial({ vertexColors: VertexColors });
+        //             let lineMesh = new Line(lineGeometry, lineMaterial);
+        //             scene.add(lineMesh);
 
-                });
-            }
-        });
+        //         });
+        //     }
+        // });
 
         function loop() {
 
