@@ -131,7 +131,7 @@ class CanvasDrawer {
             let AKT = startPoints['AKT'];
             let NT = startPoints['NT'];
 
-            for (let i = 0; i < startPoints['NT'].length; i++)
+            for (let i = 0; i < NT.length; i++)
             {
                 let NTi = NT[i];
 
@@ -179,42 +179,55 @@ class CanvasDrawer {
         let resultPoints;
         let result;
 
-        // socket.on('points.txt', (data) => {
-        //     resultPoints = JSON.parse(data);
+        socket.on('points.txt', (data) => {
+            resultPoints = JSON.parse(data);
 
-        //     for (let i = 0; i < resultPoints['NT'].length; i++)
-        //     {
-        //         // This is one Finite Element
-        //         let finiteElementVerticesNumbers = resultPoints['NT'][i];
+            let AKT = resultPoints['AKT'];
+            let NT = resultPoints['NT'];
 
-        //         triangles.forEach(site => {
-        //             let triangleGeometry = new BufferGeometry();
-        //             let lineGeometry = new BufferGeometry();
+            for (let i = 0; i < NT.length; i++)
+            {
+                let NTi = NT[i];
 
-        //             let positions = new Float32Array( 8 * 3 );
+                parts.forEach(part => {
+                    let positions = new Float32Array( 6 * 3 * 3 );
 
-        //             site.forEach((vertexNumber, index) => {
-        //                 let point = resultPoints['AKT'][finiteElementVerticesNumbers[vertexNumber]];
+                    trianlgesOnSquare.forEach((triangle, index) => {
+                        const point0 = AKT[NTi[part[triangle[0]]]];
+                        const point1 = AKT[NTi[part[triangle[1]]]];
+                        const point2 = AKT[NTi[part[triangle[2]]]];
 
-        //                 positions[index * 3] = point[0];
-        //                 positions[index * 3 + 1] = point[1];
-        //                 positions[index * 3 + 2] = point[2];
-        //             });
+                        positions[index * 9 + 0] = point0[0];
+                        positions[index * 9 + 1] = point0[1];
+                        positions[index * 9 + 2] = point0[2];
 
-        //             triangleGeometry.addAttribute('position', new BufferAttribute(positions, 3));
-        //             let triangleMesh = new Mesh(triangleGeometry, new MeshBasicMaterial({ color: 'red' }));
-        //             triangleMesh.setDrawMode(TriangleStripDrawMode);
-        //             scene.add(triangleMesh);
+                        positions[index * 9 + 3] = point1[0];
+                        positions[index * 9 + 4] = point1[1];
+                        positions[index * 9 + 5] = point1[2];
 
-        //             lineGeometry.addAttribute('position', new BufferAttribute(positions, 3));
-        //             // lineGeometry.addAttribute( 'color', new BufferAttribute(colors, 3) );
-        //             let lineMaterial = new LineBasicMaterial({ vertexColors: VertexColors });
-        //             let lineMesh = new Line(lineGeometry, lineMaterial);
-        //             scene.add(lineMesh);
+                        positions[index * 9 + 6] = point2[0];
+                        positions[index * 9 + 7] = point2[1];
+                        positions[index * 9 + 8] = point2[2];
+                    });
 
-        //         });
-        //     }
-        // });
+                    let geometry = new BufferGeometry();
+                    geometry.addAttribute('position', new BufferAttribute(positions, 3));
+                    let mesh = new Mesh(geometry, new MeshBasicMaterial({
+                        color: 'red',
+                        side: DoubleSide
+                    }));
+                    scene.add(mesh);
+
+                    var material = new MeshBasicMaterial({
+                        color: 0x000000,
+                        wireframe: true
+                    });
+
+                    var wireframe = new Mesh(geometry, material);
+                    scene.add(wireframe);
+                });
+            }
+        });
 
         function loop() {
 
