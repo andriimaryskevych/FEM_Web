@@ -164,8 +164,12 @@ class CanvasDrawer {
                     }));
                     scene.add(mesh);
 
-                    var material = new LineBasicMaterial( { color: 0xffffff } );
-                    var wireframe = new LineSegments( geometry, material );
+                    var material = new MeshBasicMaterial({
+                        color: 0xffffff,
+                        wireframe: true
+                    });
+
+                    var wireframe = new Mesh(geometry, material);
                     scene.add(wireframe);
                 });
             }
