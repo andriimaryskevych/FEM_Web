@@ -71,6 +71,11 @@ const trianlgesOnSquare = [
     [4, 5, 6]
 ];
 
+const bigTrianlgesOnSquare = [
+    [0, 3, 2],
+    [0, 2, 1]
+];
+
 class CanvasDrawer {
     constructor(canvas, socket) {
         const width = canvas.offsetWidth;
@@ -136,9 +141,9 @@ class CanvasDrawer {
                 let NTi = NT[i];
 
                 parts.forEach(part => {
-                    let positions = new Float32Array( 6 * 3 * 3 );
+                    let positions = new Float32Array( 2 * 3 * 3 );
 
-                    trianlgesOnSquare.forEach((triangle, index) => {
+                    bigTrianlgesOnSquare.forEach((triangle, index) => {
                         const point0 = AKT[NTi[part[triangle[0]]]];
                         const point1 = AKT[NTi[part[triangle[1]]]];
                         const point2 = AKT[NTi[part[triangle[2]]]];
