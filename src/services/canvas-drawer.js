@@ -21,7 +21,7 @@ import { observeStore } from '../helpers/redux-observer';
 
 const cancel = observeStore(
     store,
-    store => store.test,
+    store => store.mesh,
     newState => console.log('Observed value', newState)
 );
 

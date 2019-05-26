@@ -1,12 +1,8 @@
-const initialState = {
-    test: 1
-};
+import { combineReducers } from 'redux';
+import MeshReducer from './mesh';
 
-const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        default:
-            return state;
-    }
-};
+const rootReducer = combineReducers({
+    mesh: MeshReducer
+});
 
-export default reducer;
+export default rootReducer;

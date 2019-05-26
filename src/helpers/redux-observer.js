@@ -1,5 +1,5 @@
 const observeStore = (store, select, onChange) => {
-    let currentState;
+    let currentState = null;
 
     const handleChange = ()  =>{
         let nextState = select(store.getState());
