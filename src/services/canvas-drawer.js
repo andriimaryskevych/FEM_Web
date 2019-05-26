@@ -4,44 +4,22 @@ import {
     Scene,
     PerspectiveCamera,
 
-    Points,
     Vector3,
     Vector2,
-    Triangle,
-    Geometry,
 
     Color,
-    PointsMaterial,
     MeshBasicMaterial,
 
     GridHelper,
     AxesHelper,
 
-    Face3,
     Mesh,
-    TrianglesDrawMode,
-    TriangleFanDrawMode,
-    TriangleStripDrawMode,
     DoubleSide,
     BufferAttribute,
     BufferGeometry,
-    Line,
-    VertexColors,
-    LineBasicMaterial,
-    LineSegments,
     Raycaster
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
-// Defines path on each part for crating trinagles in strip mode
-// const triangles = [
-//     [4, 12, 16, 0, 5, 8, 13, 1],
-//     [5, 13, 17, 1, 6, 9, 14, 2],
-//     [6, 14, 18, 2, 7, 10, 15, 3],
-//     [7, 15, 19, 3, 4, 11, 12, 0],
-//     [0, 11, 8, 3, 1, 10, 9, 2],
-//     [7, 19, 18, 4, 6, 16, 17, 5]
-// ];
 
 /**
  * Adapts each part to standart square to vertexes of standart cube:
