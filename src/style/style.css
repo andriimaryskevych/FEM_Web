@@ -19,10 +19,10 @@
 }
 
 .message-container {
-    height: 1.5em;
-    margin-bottom: 10px;
-    color: red;
+    color: #FF4136;
     font-size: 1.5em;
+    display: inline-block;
+    margin-left: 10px;
 }
 
 .canvas-container {
