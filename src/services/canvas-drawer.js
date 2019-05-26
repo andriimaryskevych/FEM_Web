@@ -23,7 +23,10 @@ import {
     TriangleStripDrawMode,
     DoubleSide,
     BufferAttribute,
-    BufferGeometry
+    BufferGeometry,
+    Line,
+    VertexColors,
+    LineBasicMaterial
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
@@ -110,16 +113,13 @@ class CanvasDrawer {
                         positions[index * 3 + 2] = point[2];
                     });
 
-                    console.log(positions);
-
                     geometry.addAttribute( 'position', new BufferAttribute( positions, 3 ) );
                     let mesh = new Mesh( geometry, new MeshBasicMaterial( {
-                        // side: DoubleSide,
-                        color: 'red'
+                        color: 'green'
                     } ) );
                     mesh.setDrawMode( TriangleStripDrawMode );
 
-                    scene.add(mesh);
+                    // scene.add(mesh);
                 });
             }
         });
@@ -128,63 +128,42 @@ class CanvasDrawer {
         let resultPoints;
         let result;
 
-        // socket.on('points.txt', (data) => {
-        //     resultPoints = JSON.parse(data);
+        socket.on('points.txt', (data) => {
+            resultPoints = JSON.parse(data);
 
-        //     for (let i = 0; i < resultPoints['NT'].length; i++)
-        //     {
-        //         // This is one Finite Element
-        //         let finiteElementVerticesNumbers = resultPoints['NT'][i];
+            for (let i = 0; i < resultPoints['NT'].length; i++)
+            {
+                // This is one Finite Element
+                let finiteElementVerticesNumbers = resultPoints['NT'][i];
 
-        //         triangles.forEach(site => {
-        //             site.forEach(triangle => {
-        //                 let geom = new Geometry();
+                triangles.forEach(site => {
+                    let triangleGeometry = new BufferGeometry();
+                    let lineGeometry = new BufferGeometry();
 
-        //                 let first = resultPoints['AKT'][finiteElementVerticesNumbers[triangle[0]]];
-        //                 let second = resultPoints['AKT'][finiteElementVerticesNumbers[triangle[1]]];
-        //                 let third = resultPoints['AKT'][finiteElementVerticesNumbers[triangle[2]]];
+                    let positions = new Float32Array( 8 * 3 );
 
-        //                 geom.vertices.push(new Vector3(first[0], first[1], first[2]))
-        //                 geom.vertices.push(new Vector3(second[0], second[1], second[2]));
-        //                 geom.vertices.push(new Vector3(third[0], third[1], third[2]));
+                    site.forEach((vertexNumber, index) => {
+                        let point = resultPoints['AKT'][finiteElementVerticesNumbers[vertexNumber]];
 
-        //                 geom.faces.push(new Face3(0, 1, 2));
+                        positions[index * 3] = point[0];
+                        positions[index * 3 + 1] = point[1];
+                        positions[index * 3 + 2] = point[2];
+                    });
 
-        //                 let mesh = new Mesh(geom, new MeshBasicMaterial({color: 'red'}));
+                    triangleGeometry.addAttribute('position', new BufferAttribute(positions, 3));
+                    let triangleMesh = new Mesh(triangleGeometry, new MeshBasicMaterial({ color: 'red' }));
+                    triangleMesh.setDrawMode(TriangleStripDrawMode);
+                    scene.add(triangleMesh);
 
-        //                 scene.add(mesh);
-        //             });
-        //         });
-        //     }
-        // });
+                    lineGeometry.addAttribute('position', new BufferAttribute(positions, 3));
+                    // lineGeometry.addAttribute( 'color', new BufferAttribute(colors, 3) );
+                    let lineMaterial = new LineBasicMaterial({ vertexColors: VertexColors });
+                    let lineMesh = new Line(lineGeometry, lineMaterial);
+                    scene.add(lineMesh);
 
-        // var geometry = new BufferGeometry();
-
-        // var positions = new Float32Array( 4 * 3 );
-
-        // positions[ 0 ] = -10;
-        // positions[ 1 ] = -10;
-        // positions[ 2 ] = 0;
-
-        // positions[ 3 ] = -10;
-        // positions[ 4 ] =  10;
-        // positions[ 5 ] =  0;
-
-        // positions[ 6 ] = 10;
-        // positions[ 7 ] = -10;
-        // positions[ 8 ] = 0;
-
-        // positions[ 9 ] = 10;
-        // positions[ 10 ] = 10;
-        // positions[ 11 ] = 0;
-
-        // geometry.addAttribute( 'position', new BufferAttribute( positions, 3 ) );
-
-        // var mesh = new Mesh( geometry, new MeshBasicMaterial( { side: DoubleSide } ) );
-
-        // mesh.setDrawMode( TriangleStripDrawMode );
-
-        // scene.add( mesh );
+                });
+            }
+        });
 
         function loop() {
 
