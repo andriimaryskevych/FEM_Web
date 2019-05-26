@@ -1,18 +1,13 @@
 import {
     WebGLRenderer,
-
     Scene,
     PerspectiveCamera,
-
     Vector3,
     Vector2,
-
     Color,
     MeshBasicMaterial,
-
     GridHelper,
     AxesHelper,
-
     Mesh,
     DoubleSide,
     BufferAttribute,
@@ -21,6 +16,14 @@ import {
     Group
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import store from '../store';
+import { observeStore } from '../helpers/redux-observer';
+
+const cancel = observeStore(
+    store,
+    store => store.test,
+    newState => console.log('Observed value', newState)
+);
 
 /**
  * Adapts each part to standart square to vertexes of standart cube:
