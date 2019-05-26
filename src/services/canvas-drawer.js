@@ -21,12 +21,6 @@ import { observeStore } from '../helpers/redux-observer';
 import { parts, trianlgesOnSquare, bigTrianlgesOnSquare} from '../helpers/fem';
 import store from '../store';
 
-const cancel = observeStore(
-    store,
-    store => store.mesh,
-    newState => console.log('Observed value', newState)
-);
-
 class CanvasDrawer {
     constructor(canvas, socket) {
         this.canvas = canvas;
@@ -39,6 +33,16 @@ class CanvasDrawer {
             .setupRenderer()
             .setupControls()
             .setupSocket();
+
+        observeStore(
+            store,
+            state => state.mesh,
+            newMesh => {
+                console.log('Observed value', newMesh);
+
+                this.socket.emit('start', 'd');
+            }
+        );
     }
 
     setupCanvas () {

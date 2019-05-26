@@ -22,13 +22,12 @@ class MeshForm extends Component {
         event.preventDefault();
 
         const mesh = {
-            x: this.x.value,
-            y: this.y.value,
-            z: this.z.value,
-
-            sizeX: this.sizeX.value,
-            sizeY: this.sizeY.value,
-            sizeZ: this.sizeZ.value,
+            x: this.sizeX.value,
+            y: this.sizeY.value,
+            z: this.sizeZ.value,
+            xAxisFEMCount: this.xAxisFEMCount.value,
+            yAxisFEMCount: this.yAxisFEMCount.value,
+            zAxisFEMCount: this.zAxisFEMCount.value,
         };
 
         this.setState({ saved: true });
@@ -37,27 +36,25 @@ class MeshForm extends Component {
     }
 
     render () {
-        console.log('Props', this.props);
-
         return (
             <div className="form-style-2">
                 <form>
                     <span>Size</span>
-                    <label>
-                        <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.x} ref={element => this.x = element} onChange={this.inputChangeHandler}/>
-                        <span> x </span>
-                        <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.y} ref={element => this.y = element} onChange={this.inputChangeHandler}/>
-                        <span> x </span>
-                        <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.z} ref={element => this.z = element} onChange={this.inputChangeHandler}/>
-                    </label>
-
-                    <span>Division</span>
                     <label>
                         <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.sizeX} ref={element => this.sizeX = element} onChange={this.inputChangeHandler}/>
                         <span> x </span>
                         <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.sizeY} ref={element => this.sizeY = element} onChange={this.inputChangeHandler}/>
                         <span> x </span>
                         <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.sizeZ} ref={element => this.sizeZ = element} onChange={this.inputChangeHandler}/>
+                    </label>
+
+                    <span>Division</span>
+                    <label>
+                        <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.xAxisFEMCount} ref={element => this.xAxisFEMCount = element} onChange={this.inputChangeHandler}/>
+                        <span> x </span>
+                        <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.yAxisFEMCount} ref={element => this.yAxisFEMCount = element} onChange={this.inputChangeHandler}/>
+                        <span> x </span>
+                        <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.zAxisFEMCount} ref={element => this.zAxisFEMCount = element} onChange={this.inputChangeHandler}/>
                     </label>
 
                     <label>
