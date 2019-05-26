@@ -26,7 +26,8 @@ import {
     BufferGeometry,
     Line,
     VertexColors,
-    LineBasicMaterial
+    LineBasicMaterial,
+    LineSegments
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
@@ -162,6 +163,10 @@ class CanvasDrawer {
                         side: DoubleSide
                     }));
                     scene.add(mesh);
+
+                    var material = new LineBasicMaterial( { color: 0xffffff } );
+                    var wireframe = new LineSegments( geometry, material );
+                    scene.add(wireframe);
                 });
             }
         });
