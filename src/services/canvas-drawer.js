@@ -6,6 +6,7 @@ import {
 
     Points,
     Vector3,
+    Vector2,
     Triangle,
     Geometry,
 
@@ -27,7 +28,8 @@ import {
     Line,
     VertexColors,
     LineBasicMaterial,
-    LineSegments
+    LineSegments,
+    Raycaster
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
@@ -114,6 +116,10 @@ class CanvasDrawer {
         controls.target = new Vector3( 50, 50, 0);
         controls.update();
 
+        // Objects for raycasting
+        let objects = [];
+        let meshFemMapper = {};
+
         // adding red points that represent statr poistion
         let startPoints;
         let start;
@@ -140,7 +146,7 @@ class CanvasDrawer {
             {
                 let NTi = NT[i];
 
-                parts.forEach(part => {
+                parts.forEach((part, partIndex) => {
                     let positions = new Float32Array( 2 * 3 * 3 );
 
                     bigTrianlgesOnSquare.forEach((triangle, index) => {
@@ -168,6 +174,13 @@ class CanvasDrawer {
                         side: DoubleSide
                     }));
                     scene.add(mesh);
+
+                    meshFemMapper[mesh.uuid] = {
+                        fem: i,
+                        part: partIndex
+                    };
+
+                    objects.push(mesh);
 
                     var material = new MeshBasicMaterial({
                         color: 0xffffff,
@@ -233,6 +246,33 @@ class CanvasDrawer {
                 });
             }
         });
+
+        canvas.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+        let mouse = new Vector2();
+        let raycaster = new Raycaster();
+
+        function onDocumentMouseMove (event) {
+            event.preventDefault();
+
+            var rect = canvas.getBoundingClientRect();
+
+            const a = {
+                x: event.clientX - rect.left,
+                y: event.clientY - rect.top
+            };
+
+            mouse.set( a.x / width * 2 - 1, - ( a.y / height ) * 2 + 1 );
+
+            raycaster.setFromCamera( mouse, camera );
+            var intersects = raycaster.intersectObjects(objects);
+
+            if ( intersects.length > 0 ) {
+                var intersect = intersects[0];
+                console.log(meshFemMapper[intersect.object.uuid]);
+            }
+
+        }
 
         function loop() {
 
