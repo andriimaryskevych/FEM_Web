@@ -38,9 +38,9 @@ class CanvasDrawer {
             store,
             state => state.mesh,
             newMesh => {
-                console.log('Observed value', newMesh);
+                console.log('New mesh creation request', newMesh);
 
-                this.socket.emit('start', 'd');
+                this.socket.emit('mesh', JSON.stringify(newMesh));
             },
             1
         );

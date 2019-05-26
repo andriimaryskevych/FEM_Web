@@ -22,9 +22,9 @@ class MeshForm extends Component {
         event.preventDefault();
 
         const mesh = {
-            x: this.sizeX.value,
-            y: this.sizeY.value,
-            z: this.sizeZ.value,
+            sizeX: this.sizeX.value,
+            sizeY: this.sizeY.value,
+            sizeZ: this.sizeZ.value,
             xAxisFEMCount: this.xAxisFEMCount.value,
             yAxisFEMCount: this.yAxisFEMCount.value,
             zAxisFEMCount: this.zAxisFEMCount.value,
