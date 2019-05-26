@@ -16,8 +16,10 @@ import {
     Group
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import store from '../store';
+
 import { observeStore } from '../helpers/redux-observer';
+import { parts, trianlgesOnSquare, bigTrianlgesOnSquare} from '../helpers/fem';
+import store from '../store';
 
 const cancel = observeStore(
     store,
@@ -25,79 +27,82 @@ const cancel = observeStore(
     newState => console.log('Observed value', newState)
 );
 
-/**
- * Adapts each part to standart square to vertexes of standart cube:
- *
- * 3----6----2
- * |         |
- * |         |
- * 7         5
- * |         |
- * |         |
- * 0----4----1
- */
-const parts = [
-    [0, 1, 5, 4, 8, 13, 16, 12],
-    [1, 2, 6, 5, 9, 14, 17, 13],
-    [2, 3, 7, 6, 10, 15, 18, 14],
-    [3, 0, 4, 7, 11, 12, 19, 15],
-    [0, 1, 2, 3, 8, 9, 10, 11],
-    [4, 5, 6, 7, 16, 17, 18, 19]
-];
-
-// Defines collection of triangles on each square
-const trianlgesOnSquare = [
-    [7, 6, 3],
-    [7, 0 ,4],
-    [4, 1, 5],
-    [5, 2, 6],
-    [7, 4, 6],
-    [4, 5, 6]
-];
-
-const bigTrianlgesOnSquare = [
-    [0, 3, 2],
-    [0, 2, 1]
-];
-
 class CanvasDrawer {
     constructor(canvas, socket) {
-        const width = canvas.offsetWidth;
-        const height = canvas.offsetHeight;
+        this.canvas = canvas;
+        this.socket = socket;
 
-        canvas.setAttribute('width', width);
-        canvas.setAttribute('height', height);
+        this.setupCanvas()
+            .setupScene()
+            .setupCamera()
+            .setupHelpers()
+            .setupRenderer()
+            .setupControls()
+            .setupSocket();
+    }
 
-        var scene = new Scene();
-        scene.background = new Color(0xf0f0f0);
+    setupCanvas () {
+        this.width = this.canvas.offsetWidth;
+        this.height = this.canvas.offsetHeight;
 
-        var VIEW_ANGLE = 45;
-        var ASPECT = width / height;
-        var NEAR = 0.1;
-        var FAR = 10000;
-        let camera = new PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
-        camera.position.z = 300;
-        camera.up = new Vector3( 0, 0, 1 );
-        scene.add(camera);
+        this.canvas.setAttribute('width', this.width);
+        this.canvas.setAttribute('height', this.height);
 
-        var helper = new GridHelper(2000, 100);
-        helper.geometry.rotateX( Math.PI / 2 );
-        helper.material.opacity = 0.25;
-        helper.material.transparent = true;
-        scene.add(helper);
+        return this;
+    }
 
-        var axes = new AxesHelper(1000);
-        axes.position.set(0, 0, 0);
-        scene.add(axes);
+    setupScene () {
+        this.scene = new Scene();
+        this.scene.background = new Color(0xf0f0f0);
 
-        let renderer = new WebGLRenderer({ canvas });
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setClearColor(0xffffff);
+        return this;
+    }
 
-        let controls = new OrbitControls(camera, canvas);
-        controls.target = new Vector3( 50, 50, 0);
-        controls.update();
+    setupCamera () {
+        const VIEW_ANGLE = 45;
+        const ASPECT = this.width / this.height;
+        const NEAR = 0.1;
+        const FAR = 10000;
 
+        this.camera = new PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+        this.camera.position.z = 300;
+        this.camera.up = new Vector3( 0, 0, 1 );
+        this.scene.add(this.camera);
+
+        return this;
+    }
+
+    setupHelpers () {
+        this.gridHelper = new GridHelper(2000, 100);
+        this.gridHelper.geometry.rotateX( Math.PI / 2 );
+        this.gridHelper.material.opacity = 0.25;
+        this.gridHelper.material.transparent = true;
+        this.scene.add(this.gridHelper);
+
+        this.axesHelper = new AxesHelper(1000);
+        this.axesHelper.position.set(0, 0, 0);
+        this.scene.add(this.axesHelper);
+
+        return this;
+    }
+
+    setupRenderer () {
+        this.renderer = new WebGLRenderer({ canvas: this.canvas });
+        this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.renderer.setClearColor(0xffffff);
+
+        return this;
+    }
+
+    setupControls () {
+        this.controls = new OrbitControls(this.camera, this.canvas);
+        this.controls.target = new Vector3( 50, 50, 0);
+        this.controls.update();
+
+        return this;
+    }
+
+    setupSocket () {
         // Objects for raycasting
         let objects = [];
         let meshFemMapper = {};
@@ -106,7 +111,7 @@ class CanvasDrawer {
         let startPoints;
         let start;
 
-        socket.on('start.txt', (data) => {
+        this.socket.on('start.txt', (data) => {
             startPoints = JSON.parse(data);
 
             let AKT = startPoints['AKT'];
@@ -160,18 +165,18 @@ class CanvasDrawer {
                     });
 
                     var wireframe = new Mesh(geometry, material);
-                    scene.add(wireframe);
+                    this.scene.add(wireframe);
                 });
             }
 
-            scene.add(start);
+            this.scene.add(start);
         });
 
         // adding green points that represent result poistion
         let resultPoints;
         let result;
 
-        socket.on('points.txt', (data) => {
+        this.socket.on('points.txt', (data) => {
             resultPoints = JSON.parse(data);
 
             let AKT = resultPoints['AKT'];
@@ -208,7 +213,7 @@ class CanvasDrawer {
                         color: 'red',
                         side: DoubleSide
                     }));
-                    scene.add(mesh);
+                    this.scene.add(mesh);
 
                     var material = new MeshBasicMaterial({
                         color: 0x000000,
@@ -216,29 +221,27 @@ class CanvasDrawer {
                     });
 
                     var wireframe = new Mesh(geometry, material);
-                    scene.add(wireframe);
+                    this.scene.add(wireframe);
                 });
             }
         });
 
-        canvas.addEventListener( 'mousemove', onDocumentMouseMove, false );
-
         let mouse = new Vector2();
         let raycaster = new Raycaster();
 
-        function onDocumentMouseMove (event) {
+        const onDocumentMouseMove = (event) => {
             event.preventDefault();
 
-            var rect = canvas.getBoundingClientRect();
+            var rect = this.canvas.getBoundingClientRect();
 
             const a = {
                 x: event.clientX - rect.left,
                 y: event.clientY - rect.top
             };
 
-            mouse.set( a.x / width * 2 - 1, - ( a.y / height ) * 2 + 1 );
+            mouse.set( a.x / this.width * 2 - 1, - ( a.y / this.height ) * 2 + 1 );
 
-            raycaster.setFromCamera( mouse, camera );
+            raycaster.setFromCamera( mouse, this.camera );
             var intersects = raycaster.intersectObjects(objects);
 
             if ( intersects.length > 0 ) {
@@ -248,9 +251,10 @@ class CanvasDrawer {
 
         }
 
-        function loop() {
+        this.canvas.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
-            renderer.render(scene, camera);
+        const loop = () => {
+            this.renderer.render(this.scene, this.camera);
             requestAnimationFrame(loop);
         }
 
