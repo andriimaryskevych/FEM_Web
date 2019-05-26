@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { cretateMesh } from '../actions';
 
 class MeshForm extends Component {
     constructor (props) {
@@ -12,19 +13,27 @@ class MeshForm extends Component {
     }
 
     inputChangeHandler () {
-        this.setState({ saved: false });
+        if (this.state.saved) {
+            this.setState({ saved: false });
+        }
     }
 
     handleButtonClick (event) {
         event.preventDefault();
 
-        const meshSize = {
-            x: this.sizeX.value,
-            y: this.sizeY.value,
-            z: this.sizeZ.value
+        const mesh = {
+            x: this.x.value,
+            y: this.y.value,
+            z: this.z.value,
+
+            sizeX: this.sizeX.value,
+            sizeY: this.sizeY.value,
+            sizeZ: this.sizeZ.value,
         };
 
         this.setState({ saved: true });
+
+        this.props.dispatch(cretateMesh(mesh))
     }
 
     render () {
@@ -35,11 +44,11 @@ class MeshForm extends Component {
                 <form>
                     <span>Size</span>
                     <label>
-                        <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.x} ref={element => this.sizeX = element} onChange={this.inputChangeHandler}/>
+                        <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.x} ref={element => this.x = element} onChange={this.inputChangeHandler}/>
                         <span> x </span>
-                        <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.y} ref={element => this.sizeY = element} onChange={this.inputChangeHandler}/>
+                        <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.y} ref={element => this.y = element} onChange={this.inputChangeHandler}/>
                         <span> x </span>
-                        <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.z} ref={element => this.sizeZ = element} onChange={this.inputChangeHandler}/>
+                        <input type="text" className="tel-number-field" name="tel_no_1" maxLength="4" defaultValue={this.props.mesh.z} ref={element => this.z = element} onChange={this.inputChangeHandler}/>
                     </label>
 
                     <span>Division</span>
