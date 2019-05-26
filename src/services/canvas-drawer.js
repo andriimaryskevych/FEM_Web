@@ -17,7 +17,8 @@ import {
     DoubleSide,
     BufferAttribute,
     BufferGeometry,
-    Raycaster
+    Raycaster,
+    Group
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
@@ -103,22 +104,12 @@ class CanvasDrawer {
         let start;
 
         socket.on('start.txt', (data) => {
-            if (start) {
-                scene.remove(start);
-                start.geometry.dispose();
-                start.material.dispose();
-                start = undefined;
-
-                scene.remove(result);
-                result.geometry.dispose();
-                result.material.dispose();
-                result = undefined;
-            }
-
             startPoints = JSON.parse(data);
 
             let AKT = startPoints['AKT'];
             let NT = startPoints['NT'];
+
+            start = new Group;
 
             for (let i = 0; i < NT.length; i++)
             {
@@ -151,7 +142,7 @@ class CanvasDrawer {
                         color: 'green',
                         side: DoubleSide
                     }));
-                    scene.add(mesh);
+                    start.add(mesh);
 
                     meshFemMapper[mesh.uuid] = {
                         fem: i,
@@ -169,6 +160,8 @@ class CanvasDrawer {
                     scene.add(wireframe);
                 });
             }
+
+            scene.add(start);
         });
 
         // adding green points that represent result poistion
