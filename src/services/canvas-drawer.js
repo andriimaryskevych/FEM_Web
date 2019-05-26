@@ -41,7 +41,8 @@ class CanvasDrawer {
                 console.log('Observed value', newMesh);
 
                 this.socket.emit('start', 'd');
-            }
+            },
+            1
         );
     }
 

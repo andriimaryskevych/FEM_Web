@@ -10,11 +10,6 @@ import './style/reset.css';
 import './style/style.css';
 import './style/mesh-form.css';
 
-
-setInterval(() => {
-    store.dispatch({ type: 'SOME' });
-}, 1000);
-
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>

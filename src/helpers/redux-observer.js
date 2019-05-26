@@ -1,7 +1,13 @@
-const observeStore = (store, select, onChange) => {
+const observeStore = (store, select, onChange, ignoreCount = 0) => {
     let currentState = null;
 
-    const handleChange = ()  =>{
+    const handleChange = () => {
+        if (ignoreCount) {
+            ignoreCount--;
+
+            return;
+        }
+
         let nextState = select(store.getState());
 
         if (nextState !== currentState) {

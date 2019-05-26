@@ -9,6 +9,10 @@ const INITIAL_STATE = {
     zAxisFEMCount: 3,
 };
 
+/**
+ * Not the purest reducer
+ * It returns the same reference in default case
+ */
 export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
         case CREATE_MESH:
