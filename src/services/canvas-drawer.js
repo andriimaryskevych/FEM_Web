@@ -54,9 +54,9 @@ class CanvasDrawer {
 
         observeStore(
             store,
-            state => state.hover,
+            state => state.scroll,
             newMesh => {
-                console.log('New hover', newMesh);
+                console.log('New scroll', newMesh);
             }
         );
     }
@@ -275,7 +275,6 @@ class CanvasDrawer {
 
             if (intersected) {
                 const fem = meshFemMapper[intersected.object.uuid];
-                console.log('Clicked over', fem);
 
                 store.dispatch(addPressure(fem))
             }
