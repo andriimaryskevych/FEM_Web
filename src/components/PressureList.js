@@ -36,7 +36,7 @@ class PressureList extends Component {
                 <div className='pressure-list' id="style-2">
                     { listItems }
                 </div>
-                <input type="submit" value="Submit" onClick={this.handleSubmitButtonClick}/>
+                <input type="submit" value="Submit" className='button submit' onClick={this.handleSubmitButtonClick}/>
             </div>
         );
     }

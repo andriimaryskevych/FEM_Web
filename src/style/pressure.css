@@ -6,6 +6,7 @@
 
 .pressure-container .heading {
     font-size: 2em;
+    margin-top: 10px;
 }
 
 .separator {
@@ -17,4 +18,16 @@
 .pressure-list {
     flex: 1;
     overflow-y: scroll;
+    margin: 15px 0;
+}
+
+.pressure-container .button.submit {
+    border: none;
+	padding: 8px 15px 8px 15px;
+	background: #FF851B;
+	color: #fff;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    margin-bottom: 15px;
 }
