@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import SocketService from '../services/socket';
 
-
 import MeshForm from './MeshForm';
 import MaterialForm from './MaterialForm';
+import PressureList from './PressureList';
 
 export default class Menu extends Component {
     constructor (props) {
@@ -25,6 +25,7 @@ export default class Menu extends Component {
             <div className='menu-container'>
                 <MeshForm />
                 <MaterialForm />
+                <PressureList />
             </div>
         );
     }

@@ -1,7 +1,7 @@
 .form-style-2 {
-    width: calc(100% - 30px);
+    width: 100%;
 
-    margin: 20px 15px 10px 15px;
+    margin: 20px 0 10px 0;
     border: 3px solid #DDDDDD;
     border-radius: 10px;
     padding: 5px;
