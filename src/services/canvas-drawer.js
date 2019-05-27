@@ -20,7 +20,10 @@ import Intersection from '../services/intersection';
 import { observeStore } from '../helpers/redux-observer';
 import { parts, trianlgesOnSquare, bigTrianlgesOnSquare} from '../helpers/fem';
 
-import { addPressure } from '../actions';
+import {
+    addPressure,
+    hoverFE
+} from '../actions';
 import store from '../store';
 
 class CanvasDrawer {
@@ -47,6 +50,14 @@ class CanvasDrawer {
                 this.socket.emit('mesh', JSON.stringify(newMesh));
             },
             1
+        );
+
+        observeStore(
+            store,
+            state => state.hover,
+            newMesh => {
+                console.log('New hover', newMesh);
+            }
         );
     }
 
@@ -245,11 +256,16 @@ class CanvasDrawer {
         const onDocumentMouseMove = (event) => {
             event.preventDefault();
 
+            let payload;
             const intersected = this.Intersection.getIntersecion(event, objects);
 
             if (intersected) {
-                console.log('Hover over', meshFemMapper[intersected.object.uuid]);
+                payload = meshFemMapper[intersected.object.uuid];
+            } else {
+                payload = null;
             }
+
+            store.dispatch(hoverFE(payload));
         };
 
         const onDocumentMouseClick= (event) => {

@@ -3,31 +3,36 @@ import {
     ADD_PRESSURE,
     SET_MATERIAL,
     UPDATE_PRESSURE,
-    DELETE_PRESSURE
+    DELETE_PRESSURE,
+    HOVER_FE
 } from './action-types';
 
-
-export const cretateMesh = meshParameters => ({
+export const cretateMesh = mesh => ({
     type: CREATE_MESH,
-    payload: meshParameters
+    payload: mesh
 });
 
-export const addPressure = femProperties => ({
+export const addPressure = fe => ({
     type: ADD_PRESSURE,
-    payload: femProperties
+    payload: fe
 });
 
-export const updatePressure = pressureProperties => ({
+export const updatePressure = pressure => ({
     type: UPDATE_PRESSURE,
-    payload: pressureProperties
+    payload: pressure
 });
 
-export const deletePressure = pressureProperties => ({
+export const deletePressure = pressure => ({
     type: DELETE_PRESSURE,
-    payload: pressureProperties
+    payload: pressure
 });
 
-export const setMaterial = materialProperties => ({
+export const setMaterial = material => ({
     type: SET_MATERIAL,
-    payload: materialProperties
+    payload: material
+});
+
+export const hoverFE = fe => ({
+    type: HOVER_FE,
+    payload: fe
 });
