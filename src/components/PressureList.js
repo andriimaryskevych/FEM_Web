@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
 import {
@@ -18,6 +19,12 @@ class PressureList extends Component {
         this.deletePressureItem = this.deletePressureItem.bind(this);
         this.hoverOverFe = this.hoverOverFe.bind(this);
 
+        this.state = {
+            scrollID: null
+        };
+
+        this.scrollToItem = React.createRef();
+        this.listRef = React.createRef();
     }
 
     handleSubmitButtonClick (event) {
@@ -38,12 +45,41 @@ class PressureList extends Component {
         this.props.dispatch(hoverFE(payload));
     }
 
+    componentDidUpdate () {
+        if (this.props.scroll) {
+            const { fe, part } = this.props.scroll;
+            const id = getID(fe, part);
+
+            if (id !== this.state.scrollID) {
+                this.setState({
+                    scrollID: id
+                });
+
+                const listDOMNode = ReactDOM.findDOMNode(this.listRef.current);
+
+                const scrollToItemOffset = ReactDOM.findDOMNode(this.scrollToItem.current).offsetTop;
+                const scrollFromItemOffset = listDOMNode.offsetTop;
+
+                const offset = scrollToItemOffset - scrollFromItemOffset;
+
+                listDOMNode.scrollTo(0, offset);
+            }
+        }
+    }
+
     render () {
         let hoverID = null;
 
         if (this.props.hover) {
             const { fe, part } = this.props.hover;
             hoverID = getID(fe, part);
+        }
+
+        let scrollID = null;
+
+        if (this.props.scroll) {
+            const { fe, part } = this.props.scroll;
+            scrollID = getID(fe, part);
         }
 
         const listItems = Object.values(this.props.pressure).map(item => {
@@ -57,6 +93,7 @@ class PressureList extends Component {
                 delete={this.deletePressureItem}
                 hover={this.hoverOverFe}
                 active={item.id === hoverID}
+                ref={item.id === scrollID && this.scrollToItem}
             />
         });
 
@@ -68,7 +105,7 @@ class PressureList extends Component {
 
                 <div className='separator'></div>
 
-                <div className='pressure-list' id='style-2'>
+                <div className='pressure-list' id='style-2' ref={this.listRef}>
                     { listItems }
                 </div>
 
@@ -85,7 +122,8 @@ class PressureList extends Component {
 
 const mapStateToProps = state => ({
     pressure: state.pressure,
-    hover: state.hover
+    hover: state.hover,
+    scroll: state.scroll
 });
 
 export default connect(mapStateToProps)(PressureList);
