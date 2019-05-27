@@ -1,4 +1,8 @@
-import { ADD_PRESSURE } from '../actions/action-types';
+import {
+    ADD_PRESSURE,
+    UPDATE_PRESSURE,
+    DELETE_PRESSURE
+} from '../actions/action-types';
 
 const INITIAL_STATE = {
     test: {
@@ -10,8 +14,8 @@ const INITIAL_STATE = {
 };
 
 export default function(state = INITIAL_STATE, action) {
-    switch(action.type) {
-        case ADD_PRESSURE:
+    switch (action.type) {
+        case ADD_PRESSURE: {
             const { fe, part } = action.payload;
             const key = `fe_${fe}:${part}`;
 
@@ -28,6 +32,33 @@ export default function(state = INITIAL_STATE, action) {
                     pressure: 0.1
                 }
             };
+        }
+        case UPDATE_PRESSURE: {
+            const { id, value } = action.payload;
+            const currentPressure = state[id];
+
+            if (!currentPressure) {
+                return state;
+            }
+
+            return {
+                ...state,
+                [id]: {
+                    ...currentPressure,
+                    pressure: value
+                }
+            }
+        }
+        case DELETE_PRESSURE: {
+            console.log(action);
+
+            const { id } = action.payload;
+            const newState = { ...state };
+
+            delete newState[id];
+
+            return newState;
+        }
         default:
             return state;
     }

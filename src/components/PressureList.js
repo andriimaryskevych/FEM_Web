@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import {
+    updatePressure,
+    deletePressure
+} from '../actions';
 import PressureItem from './PressureItem';
 
 class PressureList extends Component {
@@ -19,11 +23,11 @@ class PressureList extends Component {
     }
 
     updatePressureItem (id, value) {
-        console.log('Update request for id', id, value);
+        this.props.dispatch(updatePressure({ id, value }));
     }
 
     deletePressureItem (id) {
-        console.log('Delete request for id', id);
+        this.props.dispatch(deletePressure({ id }));
     }
 
     render () {

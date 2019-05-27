@@ -1,3 +1,5 @@
 export const CREATE_MESH = 'CREATE_MESH';
-export const ADD_PRESSURE = 'ADD_PRESSURE';
 export const SET_MATERIAL = 'SET_MATERIAL';
+export const ADD_PRESSURE = 'ADD_PRESSURE';
+export const UPDATE_PRESSURE = 'UPDATE_PRESSURE';
+export const DELETE_PRESSURE = 'DELETE_PRESSURE';
