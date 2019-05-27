@@ -1,0 +1,43 @@
+.pressure-list-item {
+    border: 3px solid #DDDDDD;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+.pressure-list-item .heading {
+    font-size: 1.5em;
+}
+
+.pressure-list-item .heading span {
+    color: #001f3f
+}
+
+.pressure-list-item .heading i {
+    float: right;
+    cursor: pointer;
+}
+
+.pressure-list-item .separator {
+    margin: 5px 0;
+    border-bottom: 2px dashed #FFDC00;
+}
+
+.pressure-list-item .pressure-section span {
+    font-size: 1.2em;
+}
+
+.pressure-list-item .pressure-section input {
+    width: 70px;
+	text-align: center;
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	border: 1px solid #C2C2C2;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	padding: 3px;
+	outline: none;
+}

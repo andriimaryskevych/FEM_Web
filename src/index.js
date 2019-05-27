@@ -9,8 +9,10 @@ import store from './store';
 import './style/reset.css';
 import './style/style.css';
 import './style/mesh-form.css';
-import './style/pressure.css';
+import './style/pressure-list.css';
+import './style/pressure-item.css';
 import './style/scrollbar.css';
+import 'font-awesome/css/font-awesome.min.css'
 
 ReactDOM.render(
     <Provider store={store}>

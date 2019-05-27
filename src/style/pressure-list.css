@@ -4,24 +4,24 @@
     flex-direction: column;
 }
 
-.pressure-container .heading {
+.pressure-container > .heading {
     font-size: 2em;
     margin-top: 10px;
 }
 
-.separator {
+.pressure-container > .separator {
     margin-top: 10px;
     margin-bottom: 10px;
     border-bottom: 2px solid green;
 }
 
-.pressure-list {
+.pressure-container > .pressure-list {
     flex: 1;
     overflow-y: scroll;
-    margin: 15px 0;
+    margin-bottom: 15px;
 }
 
-.pressure-container .button.submit {
+.pressure-container > .button.submit {
     border: none;
 	padding: 8px 15px 8px 15px;
 	background: #FF851B;

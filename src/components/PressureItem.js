@@ -8,10 +8,18 @@ export default class PressureItem extends Component {
     render() {
         return (
             <div className='pressure-list-item'>
-                {this.props.id}
-                {this.props.fe}
-                {this.props.part}
-                {this.props.pressure}
+                <div className='heading'>
+                    <span>{this.props.fe}</span>
+                    <span>:</span>
+                    <span>{this.props.part}</span>
+
+                    <i className="fa fa-trash" aria-hidden="true"></i>
+                </div>
+                <div className='separator'></div>
+                <div className='pressure-section'>
+                    <span>Pressure: </span>
+                    <input type='text' defaultValue={this.props.pressure} />
+                </div>
             </div>
         );
     }
