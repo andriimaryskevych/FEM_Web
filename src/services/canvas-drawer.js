@@ -18,10 +18,9 @@ import {
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GUI } from 'three/examples/js/libs/dat.gui.min.js';
 
+import Intersection from '../services/intersection';
 import { observeStore } from '../helpers/redux-observer';
 import { parts, trianlgesOnSquare, bigTrianlgesOnSquare} from '../helpers/fem';
-import { getNormalizedCoordinates } from '../helpers/coordinates';
-import { getFirstIntersectedObjects } from '../helpers/raycaster';
 import store from '../store';
 
 class CanvasDrawer {
@@ -32,6 +31,7 @@ class CanvasDrawer {
         this.setupCanvas()
             .setupScene()
             .setupCamera()
+            .setupIntersection()
             .setupHelpers()
             .setupRenderer()
             .setupControls()
@@ -77,6 +77,12 @@ class CanvasDrawer {
         this.camera.position.z = 300;
         this.camera.up = new Vector3( 0, 0, 1 );
         this.scene.add(this.camera);
+
+        return this;
+    }
+
+    setupIntersection () {
+        this.Intersection = new Intersection(this.canvas, this.camera, this.width, this.height);
 
         return this;
     }
@@ -239,15 +245,25 @@ class CanvasDrawer {
         const onDocumentMouseMove = (event) => {
             event.preventDefault();
 
-            const point = getNormalizedCoordinates(event, this.canvas, this.width, this.height);
-            const intersected = getFirstIntersectedObjects(point, this.camera, objects);
+            const intersected = this.Intersection.getIntersecion(event, objects);
 
             if (intersected) {
-                console.log(meshFemMapper[intersected.object.uuid]);
+                console.log('Hover over', meshFemMapper[intersected.object.uuid]);
             }
-        }
+        };
 
-        this.canvas.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        const onDocumentMouseClick= (event) => {
+            event.preventDefault();
+
+            const intersected = this.Intersection.getIntersecion(event, objects);
+
+            if (intersected) {
+                console.log('Clicked over', meshFemMapper[intersected.object.uuid]);
+            }
+        };
+
+        this.canvas.addEventListener('mousemove', onDocumentMouseMove, false);
+        this.canvas.addEventListener('click', onDocumentMouseClick, false);
 
         const loop = () => {
             this.renderer.render(this.scene, this.camera);
