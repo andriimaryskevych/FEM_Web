@@ -12,7 +12,7 @@ import './style/mesh-form.css';
 import './style/pressure-list.css';
 import './style/pressure-item.css';
 import './style/scrollbar.css';
-import 'font-awesome/css/font-awesome.min.css'
+import 'font-awesome/css/font-awesome.min.css';
 
 ReactDOM.render(
     <Provider store={store}>

@@ -50,8 +50,6 @@ export default function(state = INITIAL_STATE, action) {
             }
         }
         case DELETE_PRESSURE: {
-            console.log(action);
-
             const { id } = action.payload;
             const newState = { ...state };
 

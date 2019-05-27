@@ -48,14 +48,6 @@ class CanvasDrawer {
             },
             1
         );
-
-        observeStore(
-            store,
-            state => state.pressure,
-            newMesh => {
-                console.log('New pressure values', newMesh);
-            }
-        );
     }
 
     setupCanvas () {
