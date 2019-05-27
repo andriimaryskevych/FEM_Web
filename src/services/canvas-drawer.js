@@ -19,6 +19,8 @@ import { GUI } from 'three/examples/js/libs/dat.gui.min.js';
 import Intersection from '../services/intersection';
 import { observeStore } from '../helpers/redux-observer';
 import { parts, trianlgesOnSquare, bigTrianlgesOnSquare} from '../helpers/fem';
+
+import { addPressure } from '../actions';
 import store from '../store';
 
 class CanvasDrawer {
@@ -45,6 +47,14 @@ class CanvasDrawer {
                 this.socket.emit('mesh', JSON.stringify(newMesh));
             },
             1
+        );
+
+        observeStore(
+            store,
+            state => state.pressure,
+            newMesh => {
+                console.log('New pressure values', newMesh);
+            }
         );
     }
 
@@ -164,7 +174,7 @@ class CanvasDrawer {
                     this.startArea.add(mesh);
 
                     meshFemMapper[mesh.uuid] = {
-                        fem: i,
+                        fe: i,
                         part: partIndex
                     };
 
@@ -256,7 +266,10 @@ class CanvasDrawer {
             const intersected = this.Intersection.getIntersecion(event, objects);
 
             if (intersected) {
-                console.log('Clicked over', meshFemMapper[intersected.object.uuid]);
+                const fem = meshFemMapper[intersected.object.uuid];
+                console.log('Clicked over', fem);
+
+                store.dispatch(addPressure(fem))
             }
         };
 
