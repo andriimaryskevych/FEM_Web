@@ -50,6 +50,11 @@ class PressureList extends Component {
             const { fe, part } = this.props.scroll;
             const id = getID(fe, part);
 
+            // Scroll changes not that much often
+            // Other props do update much more oftener
+            // To avoid an error when on each update list scrolls to previosly clicked object,
+            // (because scroll is not changed and point to previously slected for scroll value)
+            // After each scroll it's value is saved in state, to compare later
             if (id !== this.state.scrollID) {
                 this.setState({
                     scrollID: id
@@ -82,6 +87,7 @@ class PressureList extends Component {
             scrollID = getID(fe, part);
         }
 
+        // Ref is added only to item, to which scroll should be performed
         const listItems = Object.values(this.props.pressure).map(item => {
             return <PressureItem
                 key={item.id}
