@@ -1,8 +1,14 @@
-import { CREATE_MESH } from './action-types';
+import {
+    CREATE_MESH,
+    ADD_PRESSURE
+} from './action-types';
 
-export function cretateMesh (meshParameters) {
-    return {
-        type: CREATE_MESH,
-        payload: meshParameters
-    }
-};
+export const cretateMesh = meshParameters => ({
+    type: CREATE_MESH,
+    payload: meshParameters
+});
+
+export const addPressure = femProperties => ({
+    type: ADD_PRESSURE,
+    payload: femProperties
+});
