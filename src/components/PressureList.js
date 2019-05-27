@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 
 import {
     updatePressure,
-    deletePressure
+    deletePressure,
+    hoverFE
 } from '../actions';
 import PressureItem from './PressureItem';
 
@@ -14,6 +15,8 @@ class PressureList extends Component {
         this.handleSubmitButtonClick = this.handleSubmitButtonClick.bind(this);
         this.updatePressureItem = this.updatePressureItem.bind(this);
         this.deletePressureItem = this.deletePressureItem.bind(this);
+        this.hoverOverFe = this.hoverOverFe.bind(this);
+
     }
 
     handleSubmitButtonClick (event) {
@@ -30,6 +33,10 @@ class PressureList extends Component {
         this.props.dispatch(deletePressure({ id }));
     }
 
+    hoverOverFe (payload) {
+        this.props.dispatch(hoverFE(payload));
+    }
+
     render () {
         const listItems = Object.values(this.props.pressure).map(item => {
             return <PressureItem
@@ -40,6 +47,7 @@ class PressureList extends Component {
                 pressure={item.pressure}
                 update={this.updatePressureItem}
                 delete={this.deletePressureItem}
+                hover={this.hoverOverFe}
             />
         });
 

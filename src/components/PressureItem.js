@@ -7,6 +7,8 @@ export default class PressureItem extends Component {
         this.handleDeleteButtonCLick = this.handleDeleteButtonCLick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.saveChanges = this.saveChanges.bind(this);
+        this.mouseEnter = this.mouseEnter.bind(this);
+        this.mouseLeave = this.mouseLeave.bind(this);
 
         this.state = {
             touched: false
@@ -35,9 +37,24 @@ export default class PressureItem extends Component {
         }
     }
 
+    mouseEnter () {
+        this.props.hover({
+            fe: this.props.fe,
+            part: this.props.part
+        });
+    }
+
+    mouseLeave () {
+        this.props.hover(null);
+    }
+
     render() {
         return (
-            <div className='pressure-list-item'>
+            <div
+                className='pressure-list-item'
+                onMouseEnter={this.mouseEnter}
+                onMouseLeave={this.mouseLeave}
+            >
                 <div className='heading'>
                     <span>{this.props.fe}</span>
                     <span>:</span>
