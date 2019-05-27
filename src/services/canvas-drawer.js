@@ -16,6 +16,7 @@ import {
     Group
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { GUI } from 'three/examples/js/libs/dat.gui.min.js';
 
 import { observeStore } from '../helpers/redux-observer';
 import { parts, trianlgesOnSquare, bigTrianlgesOnSquare} from '../helpers/fem';
@@ -32,7 +33,8 @@ class CanvasDrawer {
             .setupHelpers()
             .setupRenderer()
             .setupControls()
-            .setupSocket();
+            .setupSocket()
+            .setupGUIHelper();
 
         observeStore(
             store,
@@ -112,17 +114,14 @@ class CanvasDrawer {
         let objects = [];
         let meshFemMapper = {};
 
-        // adding red points that represent statr poistion
-        let startPoints;
-        let start;
-
         this.socket.on('start.txt', (data) => {
-            startPoints = JSON.parse(data);
+            let startPoints = JSON.parse(data);
 
             let AKT = startPoints['AKT'];
             let NT = startPoints['NT'];
 
-            start = new Group;
+            this.startArea = new Group();
+            this.startNet = new Group();
 
             for (let i = 0; i < NT.length; i++)
             {
@@ -155,7 +154,8 @@ class CanvasDrawer {
                         color: 'green',
                         side: DoubleSide
                     }));
-                    start.add(mesh);
+
+                    this.startArea.add(mesh);
 
                     meshFemMapper[mesh.uuid] = {
                         fem: i,
@@ -170,22 +170,22 @@ class CanvasDrawer {
                     });
 
                     var wireframe = new Mesh(geometry, material);
-                    this.scene.add(wireframe);
+                    this.startNet.add(wireframe);
                 });
             }
 
-            this.scene.add(start);
+            this.scene.add(this.startArea);
+            this.scene.add(this.startNet);
         });
 
-        // adding green points that represent result poistion
-        let resultPoints;
-        let result;
-
         this.socket.on('points.txt', (data) => {
-            resultPoints = JSON.parse(data);
+            let resultPoints = JSON.parse(data);
 
             let AKT = resultPoints['AKT'];
             let NT = resultPoints['NT'];
+
+            this.resultArea = new Group();
+            this.resultNet = new Group();
 
             for (let i = 0; i < NT.length; i++)
             {
@@ -218,7 +218,7 @@ class CanvasDrawer {
                         color: 'red',
                         side: DoubleSide
                     }));
-                    this.scene.add(mesh);
+                    this.resultArea.add(mesh);
 
                     var material = new MeshBasicMaterial({
                         color: 0x000000,
@@ -226,9 +226,12 @@ class CanvasDrawer {
                     });
 
                     var wireframe = new Mesh(geometry, material);
-                    this.scene.add(wireframe);
+                    this.resultNet.add(wireframe);
                 });
             }
+
+            this.scene.add(this.resultArea);
+            this.scene.add(this.resultNet);
         });
 
         let mouse = new Vector2();
@@ -264,6 +267,85 @@ class CanvasDrawer {
         }
 
         loop();
+
+        return this;
+    }
+
+    setupGUIHelper () {
+        const selectionHandler = (item) => {
+            const mesh = this[item];
+
+            if (!mesh) {
+                return;
+            }
+
+            let isCurrentlyOnTheScene;
+
+            try {
+                isCurrentlyOnTheScene = mesh.parent;
+            } catch {
+                isCurrentlyOnTheScene = false;
+            }
+
+            if (isCurrentlyOnTheScene) {
+                this.scene.remove(mesh);
+
+                return false;
+            }
+
+            this.scene.add(mesh);
+            return true;
+        };
+
+        let self = this;
+
+        const object = {
+            _StartFigure: true,
+            get StartFigure () {
+                return this._StartFigure;
+            },
+            set StartFigure (value) {
+                const newValue = selectionHandler('startArea');
+
+                this._StartFigure = newValue;
+            },
+
+            _StartNet: true,
+            get StartNet () {
+                return this._StartNet;
+            },
+            set StartNet (value) {
+                const newValue = selectionHandler('startNet');
+
+                this._StartNet = newValue;
+            },
+
+            _ResultFigure: true,
+            get ResultFigure () {
+                return this._ResultFigure;
+            },
+            set ResultFigure (value) {
+                const newValue = selectionHandler('resultArea');
+
+                this._ResultFigure = newValue;
+            },
+
+            _ResultNet: true,
+            get ResultNet () {
+                return this._ResultNet;
+            },
+            set ResultNet (value) {
+                const newValue = selectionHandler('resultNet');
+
+                this._ResultNet = newValue;
+            }
+        };
+
+        const gui = new GUI();
+        gui.add(object, 'StartFigure');
+        gui.add(object, 'StartNet');
+        gui.add(object, 'ResultFigure');
+        gui.add(object, 'ResultNet');
     }
 }
 
