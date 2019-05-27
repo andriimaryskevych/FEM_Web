@@ -165,7 +165,7 @@ class CanvasDrawer {
                     objects.push(mesh);
 
                     var material = new MeshBasicMaterial({
-                        color: 0xffffff,
+                        color: 'blue',
                         wireframe: true
                     });
 
