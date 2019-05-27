@@ -8,12 +8,22 @@ class PressureList extends Component {
         super(props);
 
         this.handleSubmitButtonClick = this.handleSubmitButtonClick.bind(this);
+        this.updatePressureItem = this.updatePressureItem.bind(this);
+        this.deletePressureItem = this.deletePressureItem.bind(this);
     }
 
     handleSubmitButtonClick (event) {
         event.preventDefault();
 
         console.log('Form submited');
+    }
+
+    updatePressureItem (id, value) {
+        console.log('Update request for id', id, value);
+    }
+
+    deletePressureItem (id) {
+        console.log('Delete request for id', id);
     }
 
     render () {
@@ -24,6 +34,8 @@ class PressureList extends Component {
                 fe={item.fe}
                 part={item.part}
                 pressure={item.pressure}
+                update={this.updatePressureItem}
+                delete={this.deletePressureItem}
             />
         });
 
