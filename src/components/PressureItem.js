@@ -43,7 +43,7 @@ export default class PressureItem extends Component {
                     <span>:</span>
                     <span>{this.props.part}</span>
 
-                    <i className="fa fa-trash" aria-hidden="true" onClick={this.handleDeleteButtonCLick}></i>
+                    <i className='fa fa-trash' aria-hidden='true' onClick={this.handleDeleteButtonCLick}></i>
                 </div>
                 <div className='separator'></div>
                 <div className='pressure-section'>

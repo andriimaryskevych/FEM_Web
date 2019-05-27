@@ -17,7 +17,7 @@ export default class Canvas extends Component {
 
     render () {
         return (
-            <div className="canvas-container">
+            <div className='canvas-container'>
                 <canvas ref={element => this.threeRootElement = element}></canvas>
             </div>
         );
