@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import MeshForm from './MeshForm';
 import SocketService from '../services/socket';
 
+
+import MeshForm from './MeshForm';
+import MaterialForm from './MaterialForm';
 
 export default class Menu extends Component {
     constructor (props) {
@@ -22,6 +24,7 @@ export default class Menu extends Component {
         return (
             <div className='menu-container'>
                 <MeshForm />
+                <MaterialForm />
             </div>
         );
     }
