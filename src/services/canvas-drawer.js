@@ -20,6 +20,8 @@ import { GUI } from 'three/examples/js/libs/dat.gui.min.js';
 
 import { observeStore } from '../helpers/redux-observer';
 import { parts, trianlgesOnSquare, bigTrianlgesOnSquare} from '../helpers/fem';
+import { getNormalizedCoordinates } from '../helpers/coordinates';
+import { getFirstIntersectedObjects } from '../helpers/raycaster';
 import store from '../store';
 
 class CanvasDrawer {
@@ -234,29 +236,15 @@ class CanvasDrawer {
             this.scene.add(this.resultNet);
         });
 
-        let mouse = new Vector2();
-        let raycaster = new Raycaster();
-
         const onDocumentMouseMove = (event) => {
             event.preventDefault();
 
-            var rect = this.canvas.getBoundingClientRect();
+            const point = getNormalizedCoordinates(event, this.canvas, this.width, this.height);
+            const intersected = getFirstIntersectedObjects(point, this.camera, objects);
 
-            const a = {
-                x: event.clientX - rect.left,
-                y: event.clientY - rect.top
-            };
-
-            mouse.set( a.x / this.width * 2 - 1, - ( a.y / this.height ) * 2 + 1 );
-
-            raycaster.setFromCamera( mouse, this.camera );
-            var intersects = raycaster.intersectObjects(objects);
-
-            if ( intersects.length > 0 ) {
-                var intersect = intersects[0];
-                console.log(meshFemMapper[intersect.object.uuid]);
+            if (intersected) {
+                console.log(meshFemMapper[intersected.object.uuid]);
             }
-
         }
 
         this.canvas.addEventListener( 'mousemove', onDocumentMouseMove, false );
