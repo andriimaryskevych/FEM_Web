@@ -3,7 +3,6 @@ import {
     Scene,
     PerspectiveCamera,
     Vector3,
-    Vector2,
     Color,
     MeshBasicMaterial,
     GridHelper,
@@ -12,7 +11,6 @@ import {
     DoubleSide,
     BufferAttribute,
     BufferGeometry,
-    Raycaster,
     Group
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
