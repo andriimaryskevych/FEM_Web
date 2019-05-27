@@ -32,3 +32,5 @@ export const bigTrianlgesOnSquare = [
     [0, 3, 2],
     [0, 2, 1]
 ];
+
+export const getID = (fe, part) => `fe_${fe}:${part}`;

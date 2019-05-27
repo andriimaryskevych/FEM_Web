@@ -14,6 +14,10 @@
     color: #001f3f
 }
 
+.pressure-list-item.active {
+    background-color: #FFDC00;
+}
+
 .pressure-list-item .heading i {
     float: right;
     cursor: pointer;

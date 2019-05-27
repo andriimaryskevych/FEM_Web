@@ -7,6 +7,7 @@ import {
     hoverFE
 } from '../actions';
 import PressureItem from './PressureItem';
+import { getID } from '../helpers/fem';
 
 class PressureList extends Component {
     constructor (props) {
@@ -38,6 +39,13 @@ class PressureList extends Component {
     }
 
     render () {
+        let hoverID = null;
+
+        if (this.props.hover) {
+            const { fe, part } = this.props.hover;
+            hoverID = getID(fe, part);
+        }
+
         const listItems = Object.values(this.props.pressure).map(item => {
             return <PressureItem
                 key={item.id}
@@ -48,6 +56,7 @@ class PressureList extends Component {
                 update={this.updatePressureItem}
                 delete={this.deletePressureItem}
                 hover={this.hoverOverFe}
+                active={item.id === hoverID}
             />
         });
 
@@ -75,7 +84,8 @@ class PressureList extends Component {
 }
 
 const mapStateToProps = state => ({
-    pressure: state.pressure
+    pressure: state.pressure,
+    hover: state.hover
 });
 
 export default connect(mapStateToProps)(PressureList);

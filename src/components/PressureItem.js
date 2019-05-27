@@ -49,9 +49,15 @@ export default class PressureItem extends Component {
     }
 
     render() {
+        let classString = 'pressure-list-item';
+
+        if (this.props.active) {
+            classString += ' active';
+        }
+
         return (
             <div
-                className='pressure-list-item'
+                className={classString}
                 onMouseEnter={this.mouseEnter}
                 onMouseLeave={this.mouseLeave}
             >
