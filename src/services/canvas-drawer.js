@@ -297,8 +297,6 @@ class CanvasDrawer {
             return true;
         };
 
-        let self = this;
-
         const object = {
             _StartFigure: true,
             get StartFigure () {
