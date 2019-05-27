@@ -9,6 +9,8 @@ import store from './store';
 import './style/reset.css';
 import './style/style.css';
 import './style/mesh-form.css';
+import './style/pressure.css';
+import './style/scrollbar.css';
 
 ReactDOM.render(
     <Provider store={store}>

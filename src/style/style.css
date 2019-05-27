@@ -17,6 +17,9 @@
     padding: 0 15px;
     width: 15%;
     background-color: #fafafa;
+
+    display: flex;
+    flex-direction: column;
 }
 
 .message-container {
