@@ -18,7 +18,7 @@ import { GUI } from 'three/examples/js/libs/dat.gui.min.js';
 
 import Intersection from '../services/intersection';
 import { observeStore } from '../helpers/redux-observer';
-import { parts, trianlgesOnSquare, bigTrianlgesOnSquare} from '../helpers/fem';
+import { parts, trianlgesOnSquare, bigTrianlgesOnSquare, getID} from '../helpers/fem';
 
 import {
     addPressure,
@@ -260,7 +260,9 @@ class CanvasDrawer {
             const intersected = this.Intersection.getIntersecion(event, objects);
 
             if (intersected) {
-                payload = meshFemMapper[intersected.object.uuid];
+                const { fe, part } = meshFemMapper[intersected.object.uuid];
+
+                payload = getID(fe, part);
             } else {
                 payload = null;
             }

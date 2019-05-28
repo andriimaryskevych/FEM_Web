@@ -38,10 +38,7 @@ export default class PressureItem extends Component {
     }
 
     mouseEnter () {
-        this.props.hover({
-            fe: this.props.fe,
-            part: this.props.part
-        });
+        this.props.hover(this.props.id);
     }
 
     mouseLeave () {
@@ -51,7 +48,7 @@ export default class PressureItem extends Component {
     render() {
         let classString = 'pressure-list-item';
 
-        if (this.props.active) {
+        if (this.props.hovered) {
             classString += ' active';
         }
 

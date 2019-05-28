@@ -8,7 +8,6 @@ import {
     hoverFE
 } from '../actions';
 import PressureItem from './PressureItem';
-import { getID } from '../helpers/fem';
 
 class PressureList extends Component {
     constructor (props) {
@@ -47,8 +46,7 @@ class PressureList extends Component {
 
     componentDidUpdate () {
         if (this.props.scroll) {
-            const { fe, part } = this.props.scroll;
-            const id = getID(fe, part);
+            const id = this.props.scroll;
 
             // Scroll changes not that much often
             // Other props do update much more oftener
@@ -73,33 +71,19 @@ class PressureList extends Component {
     }
 
     render () {
-        let hoverID = null;
-
-        if (this.props.hover) {
-            const { fe, part } = this.props.hover;
-            hoverID = getID(fe, part);
-        }
-
-        let scrollID = null;
-
-        if (this.props.scroll) {
-            const { fe, part } = this.props.scroll;
-            scrollID = getID(fe, part);
-        }
-
         // Ref is added only to item, to which scroll should be performed
-        const listItems = Object.values(this.props.pressure).map(item => {
+        const listItems = Object.entries(this.props.pressure).map(([key, item]) => {
             return <PressureItem
-                key={item.id}
-                id={item.id}
+                key={key}
+                id={key}
                 fe={item.fe}
                 part={item.part}
                 pressure={item.pressure}
                 update={this.updatePressureItem}
                 delete={this.deletePressureItem}
                 hover={this.hoverOverFe}
-                active={item.id === hoverID}
-                ref={item.id === scrollID && this.scrollToItem}
+                hovered={key === this.props.hover}
+                ref={key === this.props.scroll && this.scrollToItem}
             />
         });
 

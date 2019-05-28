@@ -20,7 +20,6 @@ export default function(state = INITIAL_STATE, action) {
             return {
                 ...state,
                 [key]: {
-                    id: key,
                     fe,
                     part,
                     pressure: 0.1
