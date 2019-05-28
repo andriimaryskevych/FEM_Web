@@ -18,7 +18,7 @@ import { GUI } from 'three/examples/js/libs/dat.gui.min.js';
 
 import Intersection from '../services/intersection';
 import { observeStore } from '../helpers/redux-observer';
-import { parts, trianlgesOnSquare, bigTrianlgesOnSquare, getID} from '../helpers/fem';
+import { parts, trianlgesOnSquare, bigTrianlgesOnSquare, getID } from '../helpers/fem';
 
 import {
     addPressure,
@@ -56,7 +56,10 @@ class CanvasDrawer {
             store,
             state => state.hover,
             newMesh => {
-                console.log('New hover', newMesh);
+                const meshID = this.femMeshMapper[newMesh];
+                const hoveredMesh = this.scene.getObjectById(meshID);
+
+                console.log(hoveredMesh);
             }
         );
     }
@@ -131,7 +134,8 @@ class CanvasDrawer {
     setupSocket () {
         // Objects for raycasting
         let objects = [];
-        let meshFemMapper = {};
+        this.meshFemMapper = {};
+        this.femMeshMapper = {};
 
         this.socket.on('start.txt', (data) => {
             let startPoints = JSON.parse(data);
@@ -169,27 +173,22 @@ class CanvasDrawer {
 
                     let geometry = new BufferGeometry();
                     geometry.addAttribute('position', new BufferAttribute(positions, 3));
-                    let mesh = new Mesh(geometry, new MeshBasicMaterial({
-                        color: 'green',
-                        side: DoubleSide
-                    }));
-
+                    let mesh = new Mesh(geometry, new MeshBasicMaterial({ color: 'green', side: DoubleSide }));
                     this.startArea.add(mesh);
 
-                    meshFemMapper[mesh.uuid] = {
+                    const material = new MeshBasicMaterial({ color: 'blue', wireframe: true });
+                    const wireframe = new Mesh(geometry, material);
+                    this.startNet.add(wireframe);
+
+                    this.meshFemMapper[mesh.uuid] = {
                         fe: i,
                         part: partIndex
                     };
 
+                    const id = getID(i, partIndex);
+                    this.femMeshMapper[id] = mesh.id;
+
                     objects.push(mesh);
-
-                    var material = new MeshBasicMaterial({
-                        color: 'blue',
-                        wireframe: true
-                    });
-
-                    var wireframe = new Mesh(geometry, material);
-                    this.startNet.add(wireframe);
                 });
             }
 
@@ -260,7 +259,7 @@ class CanvasDrawer {
             const intersected = this.Intersection.getIntersecion(event, objects);
 
             if (intersected) {
-                const { fe, part } = meshFemMapper[intersected.object.uuid];
+                const { fe, part } = this.meshFemMapper[intersected.object.uuid];
 
                 payload = getID(fe, part);
             } else {
@@ -276,7 +275,7 @@ class CanvasDrawer {
             const intersected = this.Intersection.getIntersecion(event, objects);
 
             if (intersected) {
-                const fem = meshFemMapper[intersected.object.uuid];
+                const fem = this.meshFemMapper[intersected.object.uuid];
 
                 store.dispatch(addPressure(fem))
             }
