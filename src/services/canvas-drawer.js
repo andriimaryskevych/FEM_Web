@@ -54,9 +54,9 @@ class CanvasDrawer {
 
         observeStore(
             store,
-            state => state.scroll,
+            state => state.hover,
             newMesh => {
-                console.log('New scroll', newMesh);
+                console.log('New hover', newMesh);
             }
         );
     }
