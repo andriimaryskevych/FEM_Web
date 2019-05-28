@@ -13,17 +13,41 @@
     height: 100vh;
 }
 
-.menu-container {
+.absolute-positioned {
     position: absolute;
-    height: 100vh;
     z-index: 1;
-
-    padding: 0 15px;
     width: 15%;
+}
+
+.absolute-positioned.closed {
+    left: -15%;
+}
+
+.menu-container {
+    position: relative;
+    height: 100vh;
+    padding: 0 15px;
     background-color: #fafafa;
 
     display: flex;
     flex-direction: column;
+}
+
+.show-toggle {
+    position: absolute;
+    right: -30px;
+    top: 0;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.show-toggle i {
+    cursor: pointer;
 }
 
 .message-container {

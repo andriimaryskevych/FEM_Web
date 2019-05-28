@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import SocketService from '../services/socket';
 
 import MeshForm from './MeshForm';
 import MaterialForm from './MaterialForm';
@@ -9,23 +8,40 @@ export default class Menu extends Component {
     constructor (props) {
         super(props);
 
+        this.handleToggleClick = this.handleToggleClick.bind(this);
+
         this.state = {
-            socket: SocketService.getConnection()
+            menuOpen: true
         };
     }
 
-    handleButtonClick() {
-        const value = this.InputField.value;
-        this.InputField.value = '';
-        this.state.socket.emit('start', value);
+    handleToggleClick () {
+        this.setState(state => ({
+            menuOpen: !state.menuOpen
+        }));
     }
 
     render() {
+        let classString = 'absolute-positioned';
+
+        if (!this.state.menuOpen) {
+            classString += ' closed'
+        }
+
         return (
-            <div className='menu-container'>
-                <MeshForm />
-                <MaterialForm />
-                <PressureList />
+            <div className={classString}>
+                <div className='menu-container'>
+                    <div className='show-toggle' onClick={this.handleToggleClick}>
+                        {
+                            this.state.menuOpen
+                                ? <i className='fa fa-arrow-left' aria-hidden='true'></i>
+                                : <i className='fa fa-arrow-right' aria-hidden='true'></i>
+                        }
+                    </div>
+                    <MeshForm />
+                    <MaterialForm />
+                    <PressureList />
+                </div>
             </div>
         );
     }
