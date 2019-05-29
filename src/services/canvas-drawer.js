@@ -11,7 +11,10 @@ import {
     DoubleSide,
     BufferAttribute,
     BufferGeometry,
-    Group
+    Group,
+    Geometry,
+    VertexColors,
+    Face3
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GUI } from 'three/examples/js/libs/dat.gui.min.js';
@@ -310,6 +313,34 @@ class CanvasDrawer {
 
         this.canvas.addEventListener('mousemove', onDocumentMouseMove, false);
         this.canvas.addEventListener('click', onDocumentMouseClick, false);
+
+        var geometry = new Geometry();
+
+        // Make the simplest shape possible: a triangle.
+        geometry.vertices.push(
+            new Vector3(-100,  100, 0),
+            new Vector3(-100, -100, 0),
+            new Vector3( 100, -100, 0)
+        );
+
+        // Note that I'm assigning the face to a variable
+        // I'm not just shoving it into the geometry.
+        var face = new Face3(0, 1, 2);
+
+        // Assign the colors to the vertices of the face.
+        face.vertexColors[0] = new Color(0x4eff00); // blue
+        face.vertexColors[1] = new Color('red'); // red
+        face.vertexColors[2] = new Color('red'); // green
+
+        // Now the face gets added to the geometry.
+        geometry.faces.push(face);
+
+        // Using this material is important.
+        var material = new MeshBasicMaterial({vertexColors: VertexColors});
+
+        var mesh = new Mesh(geometry, material);
+
+        this.scene.add(mesh);
 
         const loop = () => {
             this.renderer.render(this.scene, this.camera);
