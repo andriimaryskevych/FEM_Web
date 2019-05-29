@@ -15,6 +15,7 @@ import {
  } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GUI } from 'three/examples/js/libs/dat.gui.min.js';
+import Stats from 'three/examples/js/libs/stats.min.js';
 
 import Intersection from '../services/intersection';
 import { observeStore } from '../helpers/redux-observer';
@@ -131,6 +132,11 @@ class CanvasDrawer {
         this.axesHelper = new AxesHelper(1000);
         this.axesHelper.position.set(0, 0, 0);
         this.scene.add(this.axesHelper);
+
+        this.stats = new Stats();
+        this.stats.dom.classList.add('stats');
+        this.stats.dom.removeAttribute('style');
+        document.body.appendChild(this.stats.dom);
 
         return this;
     }
@@ -306,6 +312,7 @@ class CanvasDrawer {
 
         const loop = () => {
             this.renderer.render(this.scene, this.camera);
+            this.stats.update();
             requestAnimationFrame(loop);
         }
 
