@@ -318,26 +318,21 @@ class CanvasDrawer {
         var positions = new Float32Array(3 * 3);
         positions[0] = -100;
         positions[1] =  100;
-        positions[2] =  0;
+        positions[2] =  1;
 
-        positions[3] = -100;
-        positions[4] = -100;
-        positions[5] =  0;
+        positions[3] =  100;
+        positions[4] =  100;
+        positions[5] =  1;
 
         positions[6] =  100;
         positions[7] = -100;
-        positions[8] =  0;
+        positions[8] =  1;
 
-        var colors = new Float32Array(3 * 3);
-        colors[0] = 1;
-        colors[1] = 0;
-        colors[2] = 0;
-        colors[3] = 0;
-        colors[4] = 1;
-        colors[5] = 0;
-        colors[6] = 0;
-        colors[7] = 0;
-        colors[8] = 1;
+        var colors = new Float32Array([
+            0.5,  0,  0.5,
+            0  ,  1,  1,
+            1  ,  1,  0,
+        ]);
 
         let geometry = new BufferGeometry();
         geometry.addAttribute('position', new BufferAttribute(positions, 3));
