@@ -52,6 +52,8 @@ class CanvasDrawer {
             1
         );
 
+        let hoverEffect;
+
         observeStore(
             store,
             state => state.hover,
@@ -59,7 +61,25 @@ class CanvasDrawer {
                 const meshID = this.femMeshMapper[newMesh];
                 const hoveredMesh = this.scene.getObjectById(meshID);
 
-                console.log(hoveredMesh);
+                // If previously some mesh was hovered
+                if (hoverEffect) {
+                    this.scene.remove(hoverEffect);
+                    hoverEffect.geometry.dispose();
+                    hoverEffect.material.dispose();
+                    hoverEffect = undefined;
+                }
+
+                // If there is no hover mesh
+                if (!hoveredMesh) {
+                    return;
+                }
+
+                const clonedPositions = new Float32Array(hoveredMesh.geometry.attributes.position.array);
+                const geometry = new BufferGeometry();
+                geometry.addAttribute('position', new BufferAttribute(clonedPositions, 3));
+                hoverEffect = new Mesh(geometry, new MeshBasicMaterial({ color: 'skyblue', side: DoubleSide }));
+
+                this.scene.add(hoverEffect);
             }
         );
     }
