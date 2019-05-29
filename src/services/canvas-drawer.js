@@ -183,22 +183,14 @@ class CanvasDrawer {
                 parts.forEach((part, partIndex) => {
                     let positions = new Float32Array( 2 * 3 * 3 );
 
-                    bigTrianlgesOnSquare.forEach((triangle, index) => {
-                        const point0 = AKT[NTi[part[triangle[0]]]];
-                        const point1 = AKT[NTi[part[triangle[1]]]];
-                        const point2 = AKT[NTi[part[triangle[2]]]];
+                    bigTrianlgesOnSquare.forEach((triangle, triangleIndex) => {
+                        triangle.forEach((vertex, vertexIndex) => {
+                            const point = AKT[NTi[part[vertex]]];
 
-                        positions[index * 9 + 0] = point0[0];
-                        positions[index * 9 + 1] = point0[1];
-                        positions[index * 9 + 2] = point0[2];
-
-                        positions[index * 9 + 3] = point1[0];
-                        positions[index * 9 + 4] = point1[1];
-                        positions[index * 9 + 5] = point1[2];
-
-                        positions[index * 9 + 6] = point2[0];
-                        positions[index * 9 + 7] = point2[1];
-                        positions[index * 9 + 8] = point2[2];
+                            positions[triangleIndex * 9 + vertexIndex * 3 + 0] = point[0];
+                            positions[triangleIndex * 9 + vertexIndex * 3 + 1] = point[1];
+                            positions[triangleIndex * 9 + vertexIndex * 3 + 2] = point[2];
+                        });
                     });
 
                     let geometry = new BufferGeometry();
@@ -242,22 +234,14 @@ class CanvasDrawer {
                 parts.forEach(part => {
                     let positions = new Float32Array( 6 * 3 * 3 );
 
-                    trianlgesOnSquare.forEach((triangle, index) => {
-                        const point0 = AKT[NTi[part[triangle[0]]]];
-                        const point1 = AKT[NTi[part[triangle[1]]]];
-                        const point2 = AKT[NTi[part[triangle[2]]]];
+                    trianlgesOnSquare.forEach((triangle, triangleIndex) => {
+                        triangle.forEach((vertex, vertexIndex) => {
+                            const point = AKT[NTi[part[vertex]]];
 
-                        positions[index * 9 + 0] = point0[0];
-                        positions[index * 9 + 1] = point0[1];
-                        positions[index * 9 + 2] = point0[2];
-
-                        positions[index * 9 + 3] = point1[0];
-                        positions[index * 9 + 4] = point1[1];
-                        positions[index * 9 + 5] = point1[2];
-
-                        positions[index * 9 + 6] = point2[0];
-                        positions[index * 9 + 7] = point2[1];
-                        positions[index * 9 + 8] = point2[2];
+                            positions[triangleIndex * 9 + vertexIndex * 3 + 0] = point[0];
+                            positions[triangleIndex * 9 + vertexIndex * 3 + 1] = point[1];
+                            positions[triangleIndex * 9 + vertexIndex * 3 + 2] = point[2];
+                        });
                     });
 
                     let geometry = new BufferGeometry();
