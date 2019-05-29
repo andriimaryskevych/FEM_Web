@@ -59,7 +59,7 @@ class CanvasDrawer {
             state => state.hover,
             newMesh => {
                 const meshID = this.femMeshMapper[newMesh];
-                const hoveredMesh = this.scene.getObjectById(meshID);
+                const hoveredMesh = this.startArea.getObjectById(meshID);
 
                 // If previously some mesh was hovered
                 if (hoverEffect) {
