@@ -329,9 +329,9 @@ class CanvasDrawer {
         positions[8] =  1;
 
         var colors = new Float32Array([
-            0.5,  0,  0.5,
-            0  ,  1,  1,
-            1  ,  1,  0,
+            0,  0,  0,
+            0.5,  0.5,  0.5,
+            1,  1,  1,
         ]);
 
         let geometry = new BufferGeometry();
