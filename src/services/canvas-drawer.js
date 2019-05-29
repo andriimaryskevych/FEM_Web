@@ -17,6 +17,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GUI } from 'three/examples/js/libs/dat.gui.min.js';
 import Stats from 'three/examples/js/libs/stats.min.js';
 
+import SocketService from '../services/socket';
 import Intersection from '../services/intersection';
 import { observeStore } from '../helpers/redux-observer';
 import { parts, trianlgesOnSquare, bigTrianlgesOnSquare, getID } from '../helpers/fem';
@@ -28,9 +29,9 @@ import {
 import store from '../store';
 
 class CanvasDrawer {
-    constructor(canvas, socket) {
+    constructor(canvas) {
         this.canvas = canvas;
-        this.socket = socket;
+        this.socket = SocketService.getConnection();
 
         this.setupCanvas()
             .setupScene()
