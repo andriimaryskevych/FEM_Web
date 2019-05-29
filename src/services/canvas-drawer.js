@@ -314,29 +314,40 @@ class CanvasDrawer {
         this.canvas.addEventListener('mousemove', onDocumentMouseMove, false);
         this.canvas.addEventListener('click', onDocumentMouseClick, false);
 
-        var geometry = new Geometry();
-
         // Make the simplest shape possible: a triangle.
-        geometry.vertices.push(
-            new Vector3(-100,  100, 0),
-            new Vector3(-100, -100, 0),
-            new Vector3( 100, -100, 0)
-        );
+        var positions = new Float32Array(3 * 3);
+        positions[0] = -100;
+        positions[1] =  100;
+        positions[2] =  0;
 
-        // Note that I'm assigning the face to a variable
-        // I'm not just shoving it into the geometry.
-        var face = new Face3(0, 1, 2);
+        positions[3] = -100;
+        positions[4] = -100;
+        positions[5] =  0;
 
-        // Assign the colors to the vertices of the face.
-        face.vertexColors[0] = new Color(0x4eff00); // blue
-        face.vertexColors[1] = new Color('red'); // red
-        face.vertexColors[2] = new Color('red'); // green
+        positions[6] =  100;
+        positions[7] = -100;
+        positions[8] =  0;
 
-        // Now the face gets added to the geometry.
-        geometry.faces.push(face);
+        var colors = new Float32Array(3 * 3);
+        colors[0] = 1;
+        colors[1] = 0;
+        colors[2] = 0;
+        colors[3] = 0;
+        colors[4] = 1;
+        colors[5] = 0;
+        colors[6] = 0;
+        colors[7] = 0;
+        colors[8] = 1;
+
+        let geometry = new BufferGeometry();
+        geometry.addAttribute('position', new BufferAttribute(positions, 3));
+        geometry.addAttribute('color', new BufferAttribute(colors, 3));
 
         // Using this material is important.
-        var material = new MeshBasicMaterial({vertexColors: VertexColors});
+        var material = new MeshBasicMaterial({
+            vertexColors: VertexColors,
+            side: DoubleSide
+        });
 
         var mesh = new Mesh(geometry, material);
 
