@@ -12,10 +12,8 @@ import {
     BufferAttribute,
     BufferGeometry,
     Group,
-    Geometry,
     VertexColors,
-    Face3
- } from 'three';
+} from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GUI } from 'three/examples/js/libs/dat.gui.min.js';
 import Stats from 'three/examples/js/libs/stats.min.js';
