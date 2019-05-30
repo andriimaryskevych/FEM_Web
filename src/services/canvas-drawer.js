@@ -113,6 +113,8 @@ class CanvasDrawer {
         const FAR = 10000;
 
         this.camera = new PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+        this.camera.position.x = 300;
+        this.camera.position.y = -300;
         this.camera.position.z = 300;
         this.camera.up = new Vector3( 0, 0, 1 );
         this.scene.add(this.camera);
