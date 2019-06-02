@@ -143,6 +143,10 @@ class CanvasDrawer {
         this.stats.dom.removeAttribute('style');
         document.body.appendChild(this.stats.dom);
 
+        this.lut = new Lut('rainbow');
+        this.lut.setMin(0);
+        this.lut.setMax(0.5);
+
         return this;
     }
 
@@ -234,6 +238,7 @@ class CanvasDrawer {
 
             let AKT = resultPoints['AKT'];
             let NT = resultPoints['NT'];
+            let STRESS = resultPoints['STRESS'];
 
             this.resultArea = new Group();
             this.resultNet = new Group();
@@ -244,6 +249,7 @@ class CanvasDrawer {
 
                 parts.forEach(part => {
                     let positions = new Float32Array( 6 * 3 * 3 );
+                    let colors = new Float32Array( 6 * 3 * 3 );
 
                     trianlgesOnSquare.forEach((triangle, triangleIndex) => {
                         triangle.forEach((vertex, vertexIndex) => {
@@ -252,15 +258,23 @@ class CanvasDrawer {
                             positions[triangleIndex * 9 + vertexIndex * 3 + 0] = point[0];
                             positions[triangleIndex * 9 + vertexIndex * 3 + 1] = point[1];
                             positions[triangleIndex * 9 + vertexIndex * 3 + 2] = point[2];
+
+                            const color = this.lut.getColor(STRESS[NTi[part[vertex]]]);
+
+                            colors[triangleIndex * 9 + vertexIndex * 3 + 0] = color.r;
+                            colors[triangleIndex * 9 + vertexIndex * 3 + 1] = color.g;
+                            colors[triangleIndex * 9 + vertexIndex * 3 + 2] = color.b;
                         });
                     });
 
                     let geometry = new BufferGeometry();
                     geometry.addAttribute('position', new BufferAttribute(positions, 3));
+                    geometry.addAttribute('color', new BufferAttribute(colors, 3));
                     let mesh = new Mesh(geometry, new MeshBasicMaterial({
-                        color: 'red',
+                        vertexColors: VertexColors,
                         side: DoubleSide
                     }));
+
                     this.resultArea.add(mesh);
 
                     var material = new MeshBasicMaterial({
