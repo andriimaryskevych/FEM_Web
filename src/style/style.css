@@ -17,6 +17,9 @@
     position: absolute;
     z-index: 1;
     width: 15%;
+    left: 0;
+
+    transition: left .3s ease-in-out;
 }
 
 .absolute-positioned.closed {
