@@ -272,6 +272,7 @@ class CanvasDrawer {
                     let geometry = new BufferGeometry();
                     geometry.addAttribute('position', new BufferAttribute(positions, 3));
                     geometry.addAttribute('color', new BufferAttribute(colors, 3));
+
                     let mesh = new Mesh(geometry, new MeshBasicMaterial({
                         vertexColors: VertexColors,
                         side: DoubleSide
@@ -279,8 +280,8 @@ class CanvasDrawer {
 
                     this.resultArea.add(mesh);
 
-                    var material = new MeshBasicMaterial({
-                        color: 0x000000,
+                    const material = new MeshBasicMaterial({
+                        vertexColors: VertexColors,
                         wireframe: true
                     });
 
