@@ -17,6 +17,7 @@ import {
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GUI } from 'three/examples/js/libs/dat.gui.min.js';
 import Stats from 'three/examples/js/libs/stats.min.js';
+import Lut from '../helpers/lut';
 
 import SocketService from '../services/socket';
 import Intersection from '../services/intersection';
