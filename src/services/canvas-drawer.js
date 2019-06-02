@@ -145,7 +145,7 @@ class CanvasDrawer {
 
         this.lut = new Lut('rainbow');
         this.lut.setMin(0);
-        this.lut.setMax(0.5);
+        this.lut.setMax(1);
 
         return this;
     }
@@ -239,6 +239,8 @@ class CanvasDrawer {
             let AKT = resultPoints['AKT'];
             let NT = resultPoints['NT'];
             let STRESS = resultPoints['STRESS'];
+
+            this.lut.setMax(resultPoints['maxStress']);
 
             this.resultArea = new Group();
             this.resultNet = new Group();
