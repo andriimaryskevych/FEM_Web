@@ -15,20 +15,6 @@ const Lut = function ( colormap, numberofcolors ) {
 
 };
 
-var defaultLabelParameters = {
-	fontsize: 24,
-	fontface: 'Arial',
-	title: '',
-	um: '',
-	ticks: 0,
-	decimal: 2,
-	notation: 'standard'
-};
-
-var defaultBackgroundColor = { r: 255, g: 100, b: 100, a: 0.8 };
-var defaultBorderColor = { r: 255, g: 0, b: 0, a: 1.0 };
-var defaultBorderThickness = 4;
-
 Lut.prototype = {
 
 	constructor: Lut,
@@ -125,7 +111,7 @@ Lut.prototype = {
 
 		var colorPosition = Math.round( alpha * this.n );
 		// eslint-disable-next-line no-unused-expressions
-		colorPosition == this.n ? colorPosition -= 1 : colorPosition;
+		colorPosition === this.n ? colorPosition -= 1 : colorPosition;
 
 		return this.lut[ colorPosition ];
 
