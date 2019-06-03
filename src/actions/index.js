@@ -4,7 +4,8 @@ import {
     SET_MATERIAL,
     UPDATE_PRESSURE,
     DELETE_PRESSURE,
-    HOVER_FE
+    HOVER_FE,
+    CHANGE_STATE
 } from './action-types';
 
 export const cretateMesh = mesh => ({
@@ -35,4 +36,9 @@ export const setMaterial = material => ({
 export const hoverFE = fe => ({
     type: HOVER_FE,
     payload: fe
+});
+
+export const changeState = state => ({
+    type: CHANGE_STATE,
+    payload: state
 });
