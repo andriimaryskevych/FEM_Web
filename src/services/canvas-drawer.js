@@ -187,7 +187,6 @@ class CanvasDrawer {
 
                 parts.forEach((part, partIndex) => {
                     let positions = new Float32Array( 2 * 3 * 3 );
-                    let colors = new Float32Array( 2 * 3 * 3 );
 
                     bigTrianlgesOnSquare.forEach((triangle, triangleIndex) => {
                         triangle.forEach((vertex, vertexIndex) => {
@@ -196,18 +195,13 @@ class CanvasDrawer {
                             positions[triangleIndex * 9 + vertexIndex * 3 + 0] = point[0];
                             positions[triangleIndex * 9 + vertexIndex * 3 + 1] = point[1];
                             positions[triangleIndex * 9 + vertexIndex * 3 + 2] = point[2];
-
-                            colors[triangleIndex * 9 + vertexIndex * 3 + 0] = point[0] / 100;
-                            colors[triangleIndex * 9 + vertexIndex * 3 + 1] = point[1] / 100;
-                            colors[triangleIndex * 9 + vertexIndex * 3 + 2] = point[2] / 100;
                         });
                     });
 
                     let geometry = new BufferGeometry();
                     geometry.addAttribute('position', new BufferAttribute(positions, 3));
-                    geometry.addAttribute('color', new BufferAttribute(colors, 3));
                     let mesh = new Mesh(geometry, new MeshBasicMaterial({
-                        vertexColors: VertexColors,
+                        color: 'red',
                         side: DoubleSide
                     }));
 
