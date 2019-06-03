@@ -4,3 +4,9 @@ export const ADD_PRESSURE = 'ADD_PRESSURE';
 export const UPDATE_PRESSURE = 'UPDATE_PRESSURE';
 export const DELETE_PRESSURE = 'DELETE_PRESSURE';
 export const HOVER_FE = 'HOVER_FE';
+
+export const INITIAL_STATE = 'INITIAL_STATE';
+export const MESH_CREATION = 'MESH_CREATION';
+export const MESH_CREATED = 'MESH_CREATED';
+export const SOLVING = 'SOLVING';
+export const SOLVED = 'SOLVED';
