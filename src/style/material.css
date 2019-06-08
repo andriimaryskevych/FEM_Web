@@ -1,0 +1,17 @@
+.material-form select {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: 1px solid #C2C2C2;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    padding: 7px;
+    outline: none;
+    margin-bottom: 10px;
+    background: white;
+}
+
+.material-form .input-type-selection {
+    width: 100%;
+}

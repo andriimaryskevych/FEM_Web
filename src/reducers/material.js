@@ -1,18 +1,27 @@
 import { SET_MATERIAL } from '../actions/action-types';
+import {
+    CUSTOM_MATERIAL,
+} from '../constants';
 
 const INITIAL_STATE = {
-    puasson: 0.3,
-    yung: 1
+    material: CUSTOM_MATERIAL,
+    value: {
+        puasson: 0.3,
+        yung: 1
+    }
 };
 
 export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
         case SET_MATERIAL:
-            const { puasson, yung } = action.payload;
+            const {
+                material,
+                value,
+            } = action.payload;
 
             return {
-                puasson,
-                yung
+                material,
+                value
             };
         default:
             return state;
