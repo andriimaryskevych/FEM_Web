@@ -22,8 +22,16 @@ import Lut from '../helpers/lut';
 import SocketService from '../services/socket';
 import Intersection from '../services/intersection';
 import { observeStore } from '../helpers/redux-observer';
-import { parts, trianlgesOnSquare, bigTrianlgesOnSquare, getID } from '../helpers/fem';
-import { MESH_CREATED, SOLVED } from '../helpers/state';
+import {
+    parts,
+    trianlgesOnSquare,
+    bigTrianlgesOnSquare,
+    getID
+} from '../helpers/fem';
+import {
+    MESH_CREATED,
+    SOLVED,
+} from '../helpers/state';
 
 import {
     addPressure,
