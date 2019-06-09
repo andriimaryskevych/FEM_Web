@@ -26,7 +26,7 @@ export const solve = () => (dispatch, getState) => {
     const mesh = state.mesh;
     const material = state.material.value;
     const pressure = {
-        load: Object.values(state.pressure)
+        load: Object.values(state.pressure).map(pressure => { pressure.pressure *= -1; return pressure; })
     };
 
     const result = Object.assign(
