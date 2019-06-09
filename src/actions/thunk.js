@@ -29,14 +29,13 @@ export const solve = () => (dispatch, getState) => {
         load: Object.values(state.pressure).map(pressure => { pressure.pressure *= -1; return pressure; })
     };
 
-    const result = Object.assign(
+    const params = Object.assign(
         {},
         mesh,
         material,
         pressure
     );
 
-    console.log(result);
-    // socket.emit('solve', JSON.stringify(params));
-    // dispatch(changeState(SOLVING));
+    socket.emit('solve', JSON.stringify(params));
+    dispatch(changeState(SOLVING));
 };
