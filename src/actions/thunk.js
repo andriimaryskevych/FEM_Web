@@ -1,17 +1,10 @@
-import {
-    CREATE_MESH,
-    CHANGE_STATE,
-} from './action-types';
+import { CREATE_MESH } from './action-types';
 import { MESH_CREATION } from '../helpers/state';
+import { changeState } from './index';
 
 const cretateMeshAction = mesh => ({
     type: CREATE_MESH,
     payload: mesh
-});
-
-const changeState = state => ({
-    type: CHANGE_STATE,
-    payload: state
 });
 
 export const createMesh = mesh => dispatch => {
