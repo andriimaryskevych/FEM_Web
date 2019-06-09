@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { cretateMesh } from '../actions';
+import { createMesh } from '../actions/thunk';
 
 class MeshForm extends Component {
     constructor (props) {
@@ -32,7 +32,7 @@ class MeshForm extends Component {
 
         this.setState({ saved: true });
 
-        this.props.dispatch(cretateMesh(mesh))
+        this.props.createMesh(mesh);
     }
 
     render () {
@@ -74,4 +74,4 @@ const mapStateToProps = state => ({
     mesh: state.mesh
 });
 
-export default connect(mapStateToProps)(MeshForm);
+export default connect(mapStateToProps, { createMesh })(MeshForm);
