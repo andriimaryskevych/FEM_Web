@@ -11,3 +11,8 @@ export const createMesh = mesh => dispatch => {
     dispatch(cretateMeshAction(mesh));
     dispatch(changeState(MESH_CREATION));
 };
+
+export const solve = () => (dispatch, getState) => {
+    // Emit to webSocket
+    // Change state
+};

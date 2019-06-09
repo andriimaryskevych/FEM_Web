@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
+import { solve } from '../actions/thunk';
 import {
     updatePressure,
     deletePressure,
@@ -29,7 +30,7 @@ class PressureList extends Component {
     handleSubmitButtonClick (event) {
         event.preventDefault();
 
-        console.log('Form submited');
+        this.props.solve();
     }
 
     updatePressureItem (id, value) {
@@ -116,4 +117,4 @@ const mapStateToProps = state => ({
     scroll: state.scroll
 });
 
-export default connect(mapStateToProps)(PressureList);
+export default connect(mapStateToProps, { solve })(PressureList);
