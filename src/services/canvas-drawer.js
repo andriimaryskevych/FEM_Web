@@ -23,10 +23,12 @@ import SocketService from '../services/socket';
 import Intersection from '../services/intersection';
 import { observeStore } from '../helpers/redux-observer';
 import { parts, trianlgesOnSquare, bigTrianlgesOnSquare, getID } from '../helpers/fem';
+import { MESH_CREATED, SOLVED } from '../helpers/state';
 
 import {
     addPressure,
-    hoverFE
+    hoverFE,
+    changeState,
 } from '../actions';
 import store from '../store';
 
@@ -162,6 +164,8 @@ class CanvasDrawer {
         this.femMeshMapper = {};
 
         this.socket.on('start.txt', (data) => {
+            store.dispatch(changeState(MESH_CREATED));
+
             let startPoints = JSON.parse(data);
 
             let AKT = startPoints['AKT'];
@@ -217,6 +221,8 @@ class CanvasDrawer {
         });
 
         this.socket.on('points.txt', (data) => {
+            store.dispatch(changeState(SOLVED));
+
             let resultPoints = JSON.parse(data);
 
             let AKT = resultPoints['AKT'];
