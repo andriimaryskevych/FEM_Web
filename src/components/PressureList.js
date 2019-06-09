@@ -34,15 +34,15 @@ class PressureList extends Component {
     }
 
     updatePressureItem (id, value) {
-        this.props.dispatch(updatePressure({ id, value }));
+        this.props.updatePressure({ id, value });
     }
 
     deletePressureItem (id) {
-        this.props.dispatch(deletePressure({ id }));
+        this.props.deletePressure({ id });
     }
 
     hoverOverFe (payload) {
-        this.props.dispatch(hoverFE(payload));
+        this.props.hoverFE(payload);
     }
 
     componentDidUpdate () {
@@ -117,4 +117,11 @@ const mapStateToProps = state => ({
     scroll: state.scroll
 });
 
-export default connect(mapStateToProps, { solve })(PressureList);
+const mapDispatchToProps = {
+    updatePressure,
+    deletePressure,
+    hoverFE,
+    solve
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PressureList);
