@@ -9,7 +9,7 @@ class MeshForm extends Component {
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.handleButtonClick = this.handleButtonClick.bind(this);
 
-        this.state = { saved: false };
+        this.state = { saved: true };
     }
 
     inputChangeHandler () {

@@ -25,7 +25,7 @@ class MaterialForm extends Component {
         this.materialTypeChange = this.materialTypeChange.bind(this);
 
         this.state = {
-            saved: false
+            saved: true
         };
 
         console.log(this.props);
