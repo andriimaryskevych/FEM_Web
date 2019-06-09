@@ -1,5 +1,8 @@
 import { CREATE_MESH } from './action-types';
-import { MESH_CREATION } from '../helpers/state';
+import {
+    MESH_CREATION,
+    SOLVING,
+} from '../helpers/state';
 import { changeState } from './index';
 import SocketService from '../services/socket';
 
@@ -18,6 +21,22 @@ export const createMesh = mesh => dispatch => {
 };
 
 export const solve = () => (dispatch, getState) => {
-    // Emit to webSocket
-    // Change state
+    const state = getState();
+
+    const mesh = state.mesh;
+    const material = state.material.value;
+    const pressure = {
+        load: Object.values(state.pressure)
+    };
+
+    const result = Object.assign(
+        {},
+        mesh,
+        material,
+        pressure
+    );
+
+    console.log(result);
+    // socket.emit('solve', JSON.stringify(params));
+    // dispatch(changeState(SOLVING));
 };
