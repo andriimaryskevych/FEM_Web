@@ -45,17 +45,6 @@ class CanvasDrawer {
             .setupSocket()
             .setupGUIHelper();
 
-        observeStore(
-            store,
-            state => state.mesh,
-            newMesh => {
-                console.log('New mesh creation request', newMesh);
-
-                this.socket.emit('mesh', JSON.stringify(newMesh));
-            },
-            1
-        );
-
         let hoverEffect;
 
         observeStore(
