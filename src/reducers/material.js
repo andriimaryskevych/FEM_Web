@@ -7,7 +7,7 @@ const INITIAL_STATE = {
     material: CUSTOM_MATERIAL,
     value: {
         puasson: 0.3,
-        yung: 1
+        young: 1
     }
 };
 

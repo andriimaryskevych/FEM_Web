@@ -21,7 +21,7 @@ class MaterialForm extends Component {
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.handleButtonClick = this.handleButtonClick.bind(this);
         this.puassonValueChange = this.puassonValueChange.bind(this);
-        this.yungValueChange = this.yungValueChange.bind(this);
+        this.youngValueChange = this.youngValueChange.bind(this);
         this.materialTypeChange = this.materialTypeChange.bind(this);
 
         this.state = {
@@ -34,7 +34,7 @@ class MaterialForm extends Component {
             this.state.inputType = MATERIAL_INPUT_TYPE.MANUAL;
 
             this.state.puasson = this.props.material.value.puasson;
-            this.state.yung = this.props.material.value.yung;
+            this.state.young = this.props.material.value.young;
         } else {
             this.state.inputType = MATERIAL_INPUT_TYPE.SELECTION;
 
@@ -62,11 +62,11 @@ class MaterialForm extends Component {
         });
     }
 
-    yungValueChange () {
+    youngValueChange () {
         this.inputChangeHandler();
 
         this.setState({
-            yung: this.yungInput.value
+            young: this.youngInput.value
         });
     }
 
@@ -89,7 +89,7 @@ class MaterialForm extends Component {
                     material: CUSTOM_MATERIAL,
                     value: {
                         puasson: this.puassoInput.value,
-                        yung: this.yungInput.value
+                        young: this.youngInput.value
                     }
                 };
 
@@ -113,7 +113,7 @@ class MaterialForm extends Component {
         this.setState({
             saved: true,
             material: material.material,
-            yung: material.value.yung,
+            young: material.value.young,
             puasson: material.value.puasson,
         });
 
@@ -145,7 +145,7 @@ class MaterialForm extends Component {
                             <label>
                                 <input type='text' className='tel-number-field' name='tel_no_1' maxLength='4' defaultValue={this.state.puasson} ref={element => this.puassoInput = element} onChange={this.puassonValueChange}/>
                                 <span> - </span>
-                                <input type='text' className='tel-number-field' name='tel_no_1' maxLength='4' defaultValue={this.state.yung} ref={element => this.yungInput = element} onChange={this.yungValueChange}/>
+                                <input type='text' className='tel-number-field' name='tel_no_1' maxLength='4' defaultValue={this.state.young} ref={element => this.youngInput = element} onChange={this.youngValueChange}/>
                             </label>
                         </div>
                     }

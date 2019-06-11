@@ -6,11 +6,11 @@ const MATERIAL_INPUT_TYPE = {
 const MATERIALS = {
     Wood: {
         puasson: 0.3,
-        yung: 1
+        young: 1
     },
     Steel: {
         puasson: 2,
-        yung: 0.1
+        young: 0.1
     },
 };
 
